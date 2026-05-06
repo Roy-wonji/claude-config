@@ -68,7 +68,7 @@ cd ~/claude-config && git pull
 ## 🤖 에이전트 카탈로그
 
 ### 🔍 `@code-reviewer`
-시니어 Swift 개발자 관점의 **읽기 전용** 코드 리뷰어.
+**10년차 시니어 Swift / iOS 개발자** 관점의 **읽기 전용** 코드 리뷰어.
 - Write/Edit 도구 미사용 — 의견만 출력
 - 심각도 표기: `[심각도: 상/중/하] 파일:라인 — 설명`
 - 관점: 로직 결함, SOLID 위반, 성능, 보안, 네이밍, 테스트 누락, **TCA Effect 누수 / retain cycle / @MainActor 격리**
