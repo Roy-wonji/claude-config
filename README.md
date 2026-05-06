@@ -15,28 +15,33 @@
 
 ```
 claude-config/
-├── agents/                       # 사용자 정의 에이전트
-│   ├── code-reviewer.md          # 시니어 Swift 관점 리뷰어 (read-only)
-│   ├── code-simplifier.md        # 기능 변경 없는 리팩터링 전문
+├── agents/                       # 에이전트
+│   ├── code-reviewer.md          # 10년차 시니어 Swift/iOS 리뷰어 (read-only)
+│   ├── code-simplifier.md        # 기능 변경 없는 리팩터링
 │   ├── test-engineer.md          # Swift Testing 기반 테스트 작성
-│   └── test-auto-pr-agent.md     # 도메인별 자동 테스트 + PR 생성 파이프라인
-├── skills/                       # 사용자 정의 스킬
-│   ├── commit/SKILL.md           # SRP 기반 커밋 플래너
-│   └── tdd/SKILL.md              # Plan → Red → Green → Review → Refactor → Commit
-└── docs/agent/                   # iOS 프로젝트용 아키텍처 / 패턴 가이드 (템플릿)
-    ├── tca-patterns.md
-    ├── swiftui-patterns.md
-    ├── swift-coding-rules.md
-    ├── popup-modal-system.md
-    ├── dependency-injection.md
-    ├── tcaflow-navigation.md
-    ├── ios-performance-optimization.md
-    ├── ios-performance-optimizer.md
-    ├── ios-performance-pfw.md
-    ├── performance-integration-guide.md
-    ├── git-workflow.md
-    ├── development-environment.md
-    └── test-auto-pr-agent.md
+│   ├── test-auto-pr-agent.md     # 도메인별 자동 테스트 + PR 파이프라인
+│   └── ios-performance-optimizer/ # PFW 통합 iOS 성능 최적화
+├── skills/                       # 스킬 (자체 + 외부 통합)
+│   ├── 자체:                      # commit, tdd
+│   ├── 성능/SwiftUI:              # ios-performance, ios-performance-pfw,
+│   │                               ios-performance-uikit-guide, swiftui-auditor,
+│   │                               swiftui-uikit-interop, swiftui-liquid-glass
+│   ├── 아키텍처:                   # tca-optimizer, clean-architecture
+│   ├── Swift/iOS 일반:             # swift-ios-skills, ios-uikit-expert,
+│   │                               apple-design-system, apple-skills
+│   ├── Hudson "Pro" 시리즈 (twostraws):  swiftui-pro, swiftdata-pro,
+│   │                                    swift-testing-pro, swift-concurrency-pro
+│   ├── Concurrency (AvdLee):       # swift-concurrency
+│   ├── 신규 영역:                  # swift-api-design-guidelines,
+│   │                                ios-accessibility, swift-security-expert,
+│   │                                ios-simulator
+│   └── Dimillian/Skills:           # swiftui-ui-patterns, swiftui-view-refactor,
+│                                    app-store-changelog, ios-debugger-agent
+├── docs/
+│   ├── agent/                    # iOS 프로젝트용 가이드 13종 (TCA/SwiftUI/DI/성능/Git/Dev 등)
+│   ├── external-swift-agent-skills.md       # twostraws 카탈로그 인덱스
+│   └── external-agents-md/SwiftAgents.md    # Hudson AGENTS.md 템플릿
+└── ATTRIBUTIONS.md                          # 외부 자산 출처/라이선스
 ```
 
 ## 🚀 새 맥에 적용

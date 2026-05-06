@@ -1,0 +1,43 @@
+{
+  "name": "ios-performance-optimizer",
+  "version": "2.0.0",
+  "description": "iOS 자동 성능 최적화 시스템 with TCA, SwiftUI, iOS Architecture - 자동 개선 계획 생성 및 승인 기반 코드 수정",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "start-node": "node --import tsx/esm src/index.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "dev": "tsx watch src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ios",
+    "swift",
+    "performance",
+    "optimization",
+    "tca",
+    "swiftui",
+    "ios-architecture",
+    "solid",
+    "memory-leak",
+    "auto-fix",
+    "code-improvement",
+    "subagent",
+    "claude",
+    "agent"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.2.101",
+    "openai": "^6.34.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  }
+}
