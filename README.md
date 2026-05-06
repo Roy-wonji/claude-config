@@ -15,13 +15,28 @@
 
 ```
 claude-config/
-├── agents/                  # 사용자 정의 에이전트
-│   ├── code-reviewer.md     # 시니어 Swift 관점 리뷰어 (read-only)
-│   ├── code-simplifier.md   # 기능 변경 없는 리팩터링 전문
-│   └── test-engineer.md     # Swift Testing 기반 테스트 작성
-└── skills/                  # 사용자 정의 스킬
-    ├── commit/SKILL.md      # SRP 기반 커밋 플래너
-    └── tdd/SKILL.md         # Plan → Red → Green → Review → Refactor → Commit
+├── agents/                       # 사용자 정의 에이전트
+│   ├── code-reviewer.md          # 시니어 Swift 관점 리뷰어 (read-only)
+│   ├── code-simplifier.md        # 기능 변경 없는 리팩터링 전문
+│   ├── test-engineer.md          # Swift Testing 기반 테스트 작성
+│   └── test-auto-pr-agent.md     # 도메인별 자동 테스트 + PR 생성 파이프라인
+├── skills/                       # 사용자 정의 스킬
+│   ├── commit/SKILL.md           # SRP 기반 커밋 플래너
+│   └── tdd/SKILL.md              # Plan → Red → Green → Review → Refactor → Commit
+└── docs/agent/                   # iOS 프로젝트용 아키텍처 / 패턴 가이드 (템플릿)
+    ├── tca-patterns.md
+    ├── swiftui-patterns.md
+    ├── swift-coding-rules.md
+    ├── popup-modal-system.md
+    ├── dependency-injection.md
+    ├── tcaflow-navigation.md
+    ├── ios-performance-optimization.md
+    ├── ios-performance-optimizer.md
+    ├── ios-performance-pfw.md
+    ├── performance-integration-guide.md
+    ├── git-workflow.md
+    ├── development-environment.md
+    └── test-auto-pr-agent.md
 ```
 
 ## 🚀 새 맥에 적용
@@ -68,6 +83,31 @@ Swift Testing 기반 테스트 작성 전문 (TDD Red 단계).
 TDD Refactor 단계 — 기능 변경 없이 구조만 개선.
 - 테스트가 모두 통과해야 함
 - 불필요한 추상화/주석/유틸리티 추가 금지
+
+### 🤖 `@test-auto-pr-agent`
+Swift Testing 기반 **도메인별 완전 자동 테스트 생성 + PR 자동 생성 파이프라인**.
+- `docs/agent/` 의 도메인 분석 → 테스트 코드 자동 생성 → 실행 → 실패 시 자동 수정
+- TCA TestStore / WeaveDI Mock 자동 설정
+- 성공 시 PR 자동 생성
+
+## 📚 docs/agent — iOS 프로젝트용 가이드 템플릿
+
+신규 iOS 프로젝트(TCA + Clean Architecture + Tuist)에 그대로 떠다 쓰거나 일부만 발췌해 사용한다.
+대표 문서:
+
+| 문서 | 내용 |
+|---|---|
+| `tca-patterns.md` | TCA Reducer / Action / State 작성 규칙, Coordinator Extension 패턴 |
+| `swiftui-patterns.md` | View Extension, Computed Properties + `@ViewBuilder`, Skeleton 패턴 |
+| `swift-coding-rules.md` | Swift 스타일, 에러 처리, TCA 에러 처리 규칙 |
+| `popup-modal-system.md` | CustomAlert / Toast / CustomModal (TCA Presentation) |
+| `dependency-injection.md` | WeaveDI 3.4.1 + AppDIManager + TCA Dependencies 통합 |
+| `tcaflow-navigation.md` | `@FlowCoordinator` 네비게이션 패턴 |
+| `ios-performance-*.md` | TCA / SwiftUI / 빌드 성능 최적화 가이드 (PFW 포함) |
+| `git-workflow.md` | 브랜치 전략, 커밋/PR/리뷰 가이드라인 |
+| `development-environment.md` | Tuist / Make / xcconfig / 테스트 명령어 |
+
+> 프로젝트에 적용할 때는 `docs/agent/` 를 그대로 복사하고, 루트 `AGENTS.md` 에서 이 폴더의 문서들을 링크로 참조하면 된다.
 
 ## 🧰 스킬 카탈로그
 
