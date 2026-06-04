@@ -1,0 +1,144 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Bash(curl:*)",
+      "Bash(docker compose:*)",
+      "Bash(docker:*)",
+      "Bash(git:*)",
+      "Bash(jq:*)",
+      "Bash(node:*)",
+      "Bash(npm i)",
+      "Bash(npm:*)",
+      "Bash(npx eslint . --ext .ts)",
+      "Bash(npx eslint src/ test/ --ext .ts --fix)",
+      "Bash(npx eslint src/ test/ --ext .ts)",
+      "Bash(npx:*)",
+      "Bash(rm /Users/suhwonji/Desktop/SideProject/OnebiteTypescript/Section6/package-lock.json)",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Read",
+      "Skill(keybindings-help)",
+      "Skill(keybindings-help:*)",
+      "Write",
+      "mcp__figma",
+      "mcp__pencil"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(rm -rf:*)",
+      "Bash(sudo:*)",
+      "Edit(.env)",
+      "Edit(.env.*)"
+    ],
+    "additionalDirectories": [
+      "/Users/suhwonji/Desktop/SideProject/OnebiteTypescript/Section6/src"
+    ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/context-engineering.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/block-dangerous.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/block-git-push.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/auto-format.sh",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/type-check.sh",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/handoff-on-failure.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "sh ${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hud/omc-hud-cache.sh ${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hud/omc-hud.mjs"
+  },
+  "enabledPlugins": {
+    "agent-council@team-attention-plugins": true,
+    "swift-lsp@claude-plugins-official": true,
+    "gitlab@claude-plugins-official": true,
+    "agent-sdk-dev@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "developer-kit-typescript@developer-kit": true,
+    "warp@claude-code-warp": true,
+    "oh-my-claudecode@omc": true,
+    "superpowers@superpowers-dev": true,
+    "frontend-design@claude-plugins-official": true,
+    "figma@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-code-warp": {
+      "source": {
+        "source": "github",
+        "repo": "warpdotdev/claude-code-warp"
+      }
+    },
+    "omc": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/Yeachan-Heo/oh-my-claudecode.git"
+      }
+    },
+    "superpowers-dev": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers"
+      }
+    }
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark-ansi",
+  "remoteControlAtStartup": true,
+  "autoUploadSessions": true,
+  "inputNeededNotifEnabled": true,
+  "agentPushNotifEnabled": true
+}

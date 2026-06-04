@@ -4,3 +4,19 @@
 # OpenAI/Codex 전용 에이전트 정의 (Claude Code에서 미사용)
 skills/**/playbook-agents/
 skills/**/agents/openai.yaml
+
+# 시크릿 — 실제 MCP 설정(API 키 포함)은 절대 커밋 금지. example 만 공유.
+mcp_servers.json
+.mcp.json
+
+# 플러그인 소스/캐시 (매니페스트 json 만 추적)
+plugins/cache/
+plugins/repos/
+plugins/marketplaces/
+plugins/data/
+plugins/oh-my-claudecode/
+plugins/SwiftUI-Agent-Skill/
+
+# Python 캐시
+__pycache__/
+*.pyc

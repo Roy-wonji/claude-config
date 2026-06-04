@@ -1,0 +1,139 @@
+{
+  "version": 2,
+  "plugins": {
+    "agent-council@team-attention-plugins": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/suhwonji",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/team-attention-plugins/agent-council/7a075d68c6bd",
+        "version": "7a075d68c6bd",
+        "installedAt": "2025-12-16T05:51:14.507Z",
+        "lastUpdated": "2026-04-20T07:17:47.384Z",
+        "gitCommitSha": "7a075d68c6bd9c8b9e7a46a101edda575f2b50fc"
+      }
+    ],
+    "swift-lsp@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/suhwonji",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/claude-plugins-official/swift-lsp/1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2025-12-20T05:26:42.846Z",
+        "lastUpdated": "2026-04-20T07:17:47.384Z"
+      },
+      {
+        "scope": "user",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/claude-plugins-official/swift-lsp/1.0.0",
+        "version": "1.0.0",
+        "installedAt": "2026-04-21T10:03:09.123Z",
+        "lastUpdated": "2026-04-21T10:03:09.123Z"
+      }
+    ],
+    "code-review@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/suhwonji",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/claude-plugins-official/code-review/unknown",
+        "version": "unknown",
+        "installedAt": "2026-02-18T13:03:18.749Z",
+        "lastUpdated": "2026-04-20T07:17:47.384Z",
+        "gitCommitSha": "261ce4fba4f2c314c490302158909a32e5889c88"
+      }
+    ],
+    "commit-commands@claude-plugins-official": [
+      {
+        "scope": "local",
+        "projectPath": "/Users/suhwonji/Desktop/SandFox/SandFox-Backend",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/claude-plugins-official/commit-commands/205b6e0b3036",
+        "version": "205b6e0b3036",
+        "installedAt": "2026-02-18T13:04:09.465Z",
+        "lastUpdated": "2026-03-04T12:48:36.457Z",
+        "gitCommitSha": "261ce4fba4f2c314c490302158909a32e5889c88"
+      }
+    ],
+    "gitlab@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/suhwonji",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/claude-plugins-official/gitlab/unknown",
+        "version": "unknown",
+        "installedAt": "2026-02-18T13:04:24.573Z",
+        "lastUpdated": "2026-04-20T07:17:47.384Z",
+        "gitCommitSha": "261ce4fba4f2c314c490302158909a32e5889c88"
+      }
+    ],
+    "agent-sdk-dev@claude-plugins-official": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/suhwonji",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/claude-plugins-official/agent-sdk-dev/unknown",
+        "version": "unknown",
+        "installedAt": "2026-02-18T13:04:24.848Z",
+        "lastUpdated": "2026-04-20T07:17:47.384Z",
+        "gitCommitSha": "261ce4fba4f2c314c490302158909a32e5889c88"
+      }
+    ],
+    "developer-kit-typescript@developer-kit": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/suhwonji",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/developer-kit/developer-kit-typescript/2.0.0",
+        "version": "2.0.0",
+        "installedAt": "2026-03-01T11:05:19.571Z",
+        "lastUpdated": "2026-04-20T07:17:47.384Z",
+        "gitCommitSha": "07ef653bf99f75be3f1c0c5002ca0a39341632e0"
+      }
+    ],
+    "warp@claude-code-warp": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/suhwonji",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/claude-code-warp/warp/2.0.0",
+        "version": "2.0.0",
+        "installedAt": "2026-04-13T09:57:00.243Z",
+        "lastUpdated": "2026-04-20T07:17:47.384Z",
+        "gitCommitSha": "c2fa0dde50076570c7db5e72d8663558a96a6502"
+      }
+    ],
+    "oh-my-claudecode@omc": [
+      {
+        "scope": "project",
+        "projectPath": "/Users/suhwonji",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/omc/oh-my-claudecode/4.12.0",
+        "version": "4.12.0",
+        "installedAt": "2026-04-20T07:17:47.384Z",
+        "lastUpdated": "2026-04-20T07:17:47.384Z",
+        "gitCommitSha": "a15b41fc418190f97f7e28f9086bd1c43185ecab"
+      }
+    ],
+    "superpowers@superpowers-dev": [
+      {
+        "scope": "user",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/superpowers-dev/superpowers/5.0.7",
+        "version": "5.0.7",
+        "installedAt": "2026-04-27T07:10:26.808Z",
+        "lastUpdated": "2026-04-27T07:10:26.808Z",
+        "gitCommitSha": "6efe32c9e2dd002d0c394e861e0529675d1ab32e"
+      }
+    ],
+    "frontend-design@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/claude-plugins-official/frontend-design/unknown",
+        "version": "unknown",
+        "installedAt": "2026-04-28T03:12:47.257Z",
+        "lastUpdated": "2026-04-28T03:12:47.257Z"
+      }
+    ],
+    "figma@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/Users/suhwonji/.claude/plugins/cache/claude-plugins-official/figma/2.2.12",
+        "version": "2.2.12",
+        "installedAt": "2026-05-05T09:19:07.838Z",
+        "lastUpdated": "2026-05-19T13:15:52.301Z",
+        "gitCommitSha": "fabc1ca81d839602ba7c1ca0f445a64246b3870e"
+      }
+    ]
+  }
+}

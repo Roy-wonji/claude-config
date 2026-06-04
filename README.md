@@ -44,6 +44,47 @@ claude-config/
 └── ATTRIBUTIONS.md                          # 외부 자산 출처/라이선스
 ```
 
+## 🔌 사용 중인 플러그인
+
+`plugins/installed_plugins.json` · `plugins/known_marketplaces.json` 기준. (마켓플레이스 = 설치 소스)
+
+| 플러그인 | 마켓플레이스 | 소스 repo | 용도 |
+|---|---|---|---|
+| `oh-my-claudecode` | omc | [Yeachan-Heo/oh-my-claudecode](https://github.com/Yeachan-Heo/oh-my-claudecode) | 멀티 에이전트 오케스트레이션(OMC) — autopilot/ultrawork/team 등 |
+| `superpowers` | superpowers-dev | [obra/superpowers](https://github.com/obra/superpowers) | 스킬 발견/실행 프레임워크 |
+| `agent-council` | team-attention-plugins | [team-attention/agent-council](https://github.com/team-attention/agent-council) | 다중 에이전트 합의/심의 |
+| `developer-kit-typescript` | developer-kit | [giuseppe-trisciuoglio/developer-kit](https://github.com/giuseppe-trisciuoglio/developer-kit) | NestJS/React/Expo TS 개발 전문 에이전트 |
+| `warp` | claude-code-warp | [warpdotdev/claude-code-warp](https://github.com/warpdotdev/claude-code-warp) | Warp 터미널 연동 |
+| `swift-lsp` | claude-plugins-official | [anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | Swift LSP 통합 |
+| `code-review` | claude-plugins-official | 〃 | 코드 리뷰 명령 |
+| `commit-commands` | claude-plugins-official | 〃 | 커밋 자동화 명령 |
+| `gitlab` | claude-plugins-official | 〃 | GitLab 연동 |
+| `agent-sdk-dev` | claude-plugins-official | 〃 | Agent SDK 앱 검증 |
+| `frontend-design` | claude-plugins-official | 〃 | 프런트엔드 디자인 |
+| `figma` | claude-plugins-official | 〃 | Figma 연동 (MCP) |
+
+> 플러그인 **소스/캐시(165MB)** 는 추적하지 않고 매니페스트 json 만 공유한다. 새 맥에서는 각 마켓플레이스를 추가 후 재설치한다.
+
+## 🪝 Hooks
+
+`hooks/` — Claude Code 훅 스크립트.
+
+| 훅 | 설명 |
+|---|---|
+| `session-start.mjs` | 세션 시작 시 컨텍스트/상태 주입 |
+| `pre-tool-use.mjs` · `post-tool-use.mjs` | 도구 사용 전/후 처리 |
+| `post-tool-use-failure.mjs` | 도구 실패 시 후처리 |
+| `block-dangerous.sh` · `block-git-push.sh` | 위험 명령 / git push 차단 |
+| `auto-format.sh` · `type-check.sh` | 저장 후 자동 포맷 / 타입 체크 |
+| `context-engineering.sh` · `handoff-on-failure.sh` | 컨텍스트 엔지니어링 / 실패 핸드오프 |
+| `keyword-detector.mjs` · `persistent-mode.mjs` · `code-simplifier.mjs` | 키워드 감지 / 지속 모드 / 코드 단순화 |
+
+## ⚙️ 전역 설정
+
+- `CLAUDE.md` — 전역 지침(모델 라우팅 · 토큰 절약 · MCP 자동 사용 규칙 등)
+- `settings.json` — 권한 / 모델 / 훅 / statusline 설정
+- `mcp_servers.example.json` — MCP 서버 설정 예시. **실제 `mcp_servers.json`(API 키 포함)은 `.gitignore` 로 제외.** 사용 시 복사 후 `FIGMA_API_KEY` 등 본인 키 입력.
+
 ## 🚀 새 맥에 적용
 
 ### 옵션 A. 복사 (단발성)
