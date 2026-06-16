@@ -76,6 +76,7 @@ claude-config/
 | `post-tool-use-failure.mjs` | 도구 실패 시 후처리 |
 | `block-dangerous.sh` · `block-git-push.sh` | 위험 명령 / git push 차단 |
 | `auto-format.sh` · `type-check.sh` | 저장 후 자동 포맷 / 타입 체크 |
+| `scripts/sync-skills.sh` (Stop 훅) | 세션 종료 시 로컬 `~/.claude/skills` 변경을 이 repo 로 자동 동기화 (변경 있을 때만 commit+push, `.env`/`node_modules`/깨진 symlink 제외) |
 | `context-engineering.sh` · `handoff-on-failure.sh` | 컨텍스트 엔지니어링 / 실패 핸드오프 |
 | `keyword-detector.mjs` · `persistent-mode.mjs` · `code-simplifier.mjs` | 키워드 감지 / 지속 모드 / 코드 단순화 |
 
@@ -172,6 +173,12 @@ SRP 기반 커밋 플래너.
 - 변경을 단일 책임 단위로 분리한 **커밋 플랜** 제시 후 사용자 승인 시 순차 커밋
 - `git add -A`/`.` 금지, 파일 명시적 지정
 - Conventional Commits 형식 (`feat`, `fix`, `refactor`, `test`, `chore`, `docs`, `style`)
+
+### 🎨 `figma-pencil-ui-fallback`
+Figma 디자인 → UI 구현 시 **Figma MCP 한도(rate limit/quota/429) 도달하면 Pencil MCP 로 자동 전환**.
+- 마지막 Figma 스크린샷/토큰을 레퍼런스로 고정
+- Pencil 로 동일 디자인을 `.pen` 에 복제(픽셀/레이아웃 일치) 후 대조 보정
+- `.pen` 수치를 읽어 대상 프레임워크 UI 코드로 변환 + 시각 일치 검증
 
 ## ✅ 커밋 메시지 규칙
 
