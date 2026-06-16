@@ -113,7 +113,8 @@
     "oh-my-claudecode@omc": true,
     "superpowers@superpowers-dev": true,
     "frontend-design@claude-plugins-official": true,
-    "figma@claude-plugins-official": true
+    "figma@claude-plugins-official": true,
+    "apple-skills@roy-claude-config": true
   },
   "extraKnownMarketplaces": {
     "claude-code-warp": {
@@ -132,6 +133,12 @@
       "source": {
         "source": "github",
         "repo": "obra/superpowers"
+      }
+    },
+    "roy-claude-config": {
+      "source": {
+        "source": "github",
+        "repo": "Roy-wonji/claude-config"
       }
     }
   },
