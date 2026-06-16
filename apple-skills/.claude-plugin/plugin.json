@@ -1,0 +1,9 @@
+{
+  "name": "apple-skills",
+  "version": "1.0.0",
+  "description": "Apple/Swift 스킬 모음 (rshankras/claude-code-apple-skills, MIT) — iOS·SwiftUI·Swift·테스트·보안·성능 등 카테고리별 라우터 스킬.",
+  "author": { "name": "Ravishankar (rshankras)" },
+  "repository": "https://github.com/rshankras/claude-code-apple-skills",
+  "license": "MIT",
+  "keywords": ["swift","swiftui","ios","apple","testing","performance"]
+}

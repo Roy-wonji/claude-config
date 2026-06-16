@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/refs/heads/main/marketplace/marketplace.schema.json",
+  "name": "roy-claude-config",
+  "version": "1.0.0",
+  "owner": { "name": "Roy", "email": "suhwj81@gmail.com" },
+  "metadata": { "description": "Roy 개인 Claude 설정 마켓플레이스" },
+  "plugins": [
+    {
+      "name": "apple-skills",
+      "source": "./apple-skills",
+      "description": "Apple/Swift 스킬 모음 (rshankras, MIT)",
+      "license": "MIT",
+      "category": "development"
+    }
+  ]
+}
