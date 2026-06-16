@@ -43,6 +43,17 @@ Figma MCP 로 디자인을 읽어 UI 를 구현하되, **Figma MCP 가 한도(ra
 - [ ] 텍스트 wrapping/줄간격/폰트 weight 일치
 - [ ] 토큰화 가능한 값은 하드코딩 대신 디자인 토큰 사용
 
+## 한도 우회 / 활용 팁
+공식 Figma MCP 한도가 부담되거나 막힐 때:
+- **커뮤니티 플러그인 활용**: 공식 MCP 대신 *Talk to Figma MCP* 같은 커뮤니티 플러그인을 쓰면 무료 계정으로도 제한 없이 프롬프트 사용 가능.
+- **프롬프트/디자인 최적화**: 레이어가 복잡하거나 **Auto Layout 미적용**이면 토큰을 더 쓰고 오류가 잦아진다. 레이어를 단순·깔끔하게 정리하고 Auto Layout 을 적용한 뒤 요청하면 토큰 한도 문제를 예방.
+- 위 방법으로도 막히면 이 스킬의 **Pencil 폴백**(디자인 복제 → .pen → UI) 으로 전환.
+
+## 참고
+- ios-simulator skill: https://claudeskills.info/skill/ios-simulator-skill/
+- thought-based-reasoning skill: https://claudeskills.info/skill/thought-based-reasoning/
+- Apple skills 모음(rshankras): https://github.com/rshankras/claude-code-apple-skills
+
 ## 주의
 - Pencil `.pen` 은 암호화 — `mcp__pencil__*` 도구로만 접근(Read/Grep 금지).
 - Pencil 은 CSS/HTML 이 아닌 자체 레이아웃 모델 — 스키마에 있는 속성만 사용.
