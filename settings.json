@@ -41,6 +41,19 @@
     ]
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git -C \"$HOME/.claude\" pull --ff-only --quiet 2>/dev/null || true",
+            "timeout": 30,
+            "statusMessage": "Syncing claude-config...",
+            "async": true
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [
@@ -100,29 +113,23 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "sh ${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hud/omc-hud-cache.sh ${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hud/omc-hud.mjs"
+    "command": "node ${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hud/omc-hud.mjs"
   },
   "enabledPlugins": {
     "agent-council@team-attention-plugins": true,
     "swift-lsp@claude-plugins-official": true,
-    "gitlab@claude-plugins-official": true,
+    "gitlab@claude-plugins-official": false,
     "agent-sdk-dev@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "developer-kit-typescript@developer-kit": true,
-    "warp@claude-code-warp": true,
     "oh-my-claudecode@omc": true,
     "superpowers@superpowers-dev": true,
     "frontend-design@claude-plugins-official": true,
     "figma@claude-plugins-official": true,
-    "apple-skills@roy-claude-config": true
+    "apple-skills@roy-claude-config": true,
+    "warp@claude-code-warp": true
   },
   "extraKnownMarketplaces": {
-    "claude-code-warp": {
-      "source": {
-        "source": "github",
-        "repo": "warpdotdev/claude-code-warp"
-      }
-    },
     "omc": {
       "source": {
         "source": "git",
@@ -139,6 +146,12 @@
       "source": {
         "source": "github",
         "repo": "Roy-wonji/claude-config"
+      }
+    },
+    "claude-code-warp": {
+      "source": {
+        "source": "github",
+        "repo": "warpdotdev/claude-code-warp"
       }
     }
   },
