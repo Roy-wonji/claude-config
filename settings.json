@@ -177,6 +177,7 @@
   "skipDangerousModePermissionPrompt": true,
   "teammateMode": "auto",
   "todoFeatureEnabled": true,
+  "fileCheckpointingEnabled": true,
   "theme": "dark-ansi",
   "remoteControlAtStartup": true,
   "autoUploadSessions": true,
