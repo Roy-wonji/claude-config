@@ -50,6 +50,13 @@
             "timeout": 30,
             "statusMessage": "Syncing claude-config...",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "find .omc/state/sessions -mindepth 1 -maxdepth 1 -type d -mtime +7 -exec rm -rf {} + 2>/dev/null || true",
+            "timeout": 15,
+            "statusMessage": "오래된 .omc 세션 정리 중",
+            "async": true
           }
         ]
       }
@@ -109,6 +116,18 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/notify-stop.sh",
+            "timeout": 10,
+            "async": true
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
@@ -160,5 +179,6 @@
   "remoteControlAtStartup": true,
   "autoUploadSessions": true,
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "tui": "fullscreen"
 }
