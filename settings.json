@@ -116,18 +116,6 @@
           }
         ]
       }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/notify-stop.sh",
-            "timeout": 10,
-            "async": true
-          }
-        ]
-      }
     ]
   },
   "statusLine": {
