@@ -163,6 +163,8 @@
     }
   },
   "skipDangerousModePermissionPrompt": true,
+  "teammateMode": "auto",
+  "todoFeatureEnabled": true,
   "theme": "dark-ansi",
   "remoteControlAtStartup": true,
   "autoUploadSessions": true,
