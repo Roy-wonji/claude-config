@@ -211,6 +211,22 @@ claude plugin install apple-skills@roy-claude-config
 - `Co-Authored-By: Claude ...` 같은 자동 서명 라인 **절대 추가 금지**
 - 민감 파일(`.env`, 자격 증명) 커밋 금지
 
+## 🏗 하네스 팀 (harness-100 + revfactory) — 작업 매칭 시 자동 호출
+
+명령어 없이도 작업 성격에 맞으면 **자동으로** 해당 팀/스킬이 붙는다 (CLAUDE.md 「자동 하네스·팀 적용」 규칙).
+
+| 팀 / 스킬 | 자동 트리거 작업 | 구성 |
+|---|---|---|
+| `harness` (revfactory) | 새 도메인 자동화 체계·역할 분해 작업 → **항상 우선 검토** | 팀 아키텍처 팩토리(6패턴) |
+| `code-reviewer` | 코드 리뷰·PR 검토 | 스타일→보안→성능→아키텍처 5인 |
+| `test-automation` | 테스트 작성·커버리지·CI 테스트 | 전략·단위·통합·커버리지·QA |
+| `cicd-pipeline` | CI/CD·배포 파이프라인 | 설계·인프라·보안스캔·모니터링 |
+| `legacy-modernizer` | 레거시 리팩터·마이그레이션 | 분석·전략·마이그레이션·회귀 |
+| `mobile-app-builder` | 모바일 앱 개발·UX·API·스토어 | app-developer·ux-designer·api-integrator·qa-engineer·store-manager |
+| `karpathy-guidelines` | **모든 코드 작업 상시** | 4원칙(Think/Simplicity/Surgical/Goal) |
+
+출처: [revfactory/harness](https://github.com/revfactory/harness), [revfactory/harness-100](https://github.com/revfactory/harness-100), [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills)
+
 ## 🔔 자동 호출 키워드 (참고)
 
 iOS 프로젝트에서 다음 키워드 등장 시 성능/아키텍처 스킬 자동 호출:
