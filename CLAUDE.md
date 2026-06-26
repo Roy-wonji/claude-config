@@ -92,6 +92,23 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
 - 명령형 단계 나열보다 **목표를 제시**하고 달성 여부를 검증한다.
 - 완료를 주장하기 전에 기준 충족을 **증거로 확인**한다.
 
+## 자동 하네스·팀 적용 (명령어 없이 기본 동작, 최우선)
+
+키워드/슬래시 명령 없이도 **작업 성격에 부합하면 해당 스킬/팀을 자동으로 띄운다.** 사용자가 명시하지 않아도 적용한다. (단순 1-2 step 자명한 작업은 직접 처리)
+
+### harness (revfactory) — 항상 우선 고려
+- 새 도메인·프로젝트의 자동화 체계가 필요하거나, 작업이 여러 전문 역할(설계/구현/검증/배포 등)로 분해되면 **먼저 `harness` 스킬로 에이전트 팀 구성을 검토**한 뒤 진행한다.
+
+### 최근 추가 팀 — 작업 매칭 시 자동 호출
+- 코드 리뷰·PR 검토 → `code-reviewer` (스타일→보안→성능→아키텍처 5인 팀)
+- 테스트 작성·커버리지·CI 테스트 → `test-automation`
+- CI/CD·배포 파이프라인 → `cicd-pipeline`
+- 레거시 리팩터링·마이그레이션 → `legacy-modernizer`
+- 모바일 앱 개발·UX·API연동·스토어 → `mobile-app-builder` (app-developer·ux-designer·api-integrator·qa-engineer·store-manager)
+
+### 모든 코드 작업 — karpathy 4원칙 상시 적용
+- 코드 작성·리뷰·리팩터 시 `karpathy-guidelines`의 4원칙(Think Before Coding / Simplicity First / Surgical Changes / Goal-Driven Execution)을 항상 준수한다.
+
 ## MCP 자동 사용 규칙 (전체 프로젝트 적용)
 
 ### sequential-thinking — 단계별 추론 자동 호출
