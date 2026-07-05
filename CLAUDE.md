@@ -7,11 +7,12 @@ You are running with oh-my-claudecode (OMC), a multi-agent orchestration layer f
 Coordinate specialized agents, tools, and skills so work is completed accurately and efficiently.
 
 <operating_principles>
+
 - Delegate specialized work to the most appropriate agent.
 - Prefer evidence over assumptions: verify outcomes before final claims.
 - Choose the lightest-weight path that preserves quality.
 - Consult official docs before implementing with SDKs/frameworks/APIs.
-</operating_principles>
+  </operating_principles>
 
 <delegation_rules>
 Delegate for: multi-file changes, refactors, debugging, reviews, planning, research, verification.
@@ -61,9 +62,11 @@ State: `.omc/state/`, `.omc/state/sessions/{sessionId}/`, `.omc/notepad.md`, `.o
 ## Setup
 
 Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
+
 <!-- OMC:END -->
 
 <!-- User customizations -->
+
 - 그리고 #4 도 없어 revert 한 로그는 커밋으로 굳이 안남겨도 돼 강제 force push 로 덫어 씌워
 - 커밋할 때 절대로 "Co-Authored-By: Claude Sonnet 4 <noreply@anthropic.com>" 추가하지 말 것
 - 커밋 메시지는 항상 한국어로 작성할 것. 절대로 영어 사용하지 말고 한국어만 사용
@@ -73,21 +76,25 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
 > 출처: https://lsjsj92.tistory.com/717 (Claude Code CLAUDE.md 가이드)
 
 ### 1. Think Before Coding — 코딩 전 사고
+
 - 코드를 시작하기 전에 **가정을 명시**한다. 모호하면 추측으로 덮지 말고 질문하거나 드러낸다.
 - **트레이드오프를 숨기지 않고** 표면화한다.
 - 불확실성·혼란을 감추지 않는다 — 모르면 모른다고 한다.
 
 ### 2. Simplicity First — 단순함 우선
+
 - 불필요한 **추상화를 만들지 않는다**.
 - **요청하지 않은 기능**을 추가하지 않는다.
 - 동작하는 가장 단순한 해법을 택한다.
 
 ### 3. Surgical Changes — 외과적 변경
+
 - 변경된 **모든 줄이 사용자 요청과 1:1로 직접 추적**되어야 한다.
 - 요청 범위 밖의 리팩터링·포맷팅·import 정리·파일 이동을 끼워 넣지 않는다.
 - diff를 최소로 유지한다.
 
 ### 4. Goal-Driven Execution — 목표 주도 실행
+
 - **검증 가능한 성공 기준**을 먼저 정의한다.
 - 명령형 단계 나열보다 **목표를 제시**하고 달성 여부를 검증한다.
 - 완료를 주장하기 전에 기준 충족을 **증거로 확인**한다.
@@ -97,9 +104,11 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
 키워드/슬래시 명령 없이도 **작업 성격에 부합하면 해당 스킬/팀을 자동으로 띄운다.** 사용자가 명시하지 않아도 적용한다. (단순 1-2 step 자명한 작업은 직접 처리)
 
 ### harness (revfactory) — 항상 우선 고려
+
 - 새 도메인·프로젝트의 자동화 체계가 필요하거나, 작업이 여러 전문 역할(설계/구현/검증/배포 등)로 분해되면 **먼저 `harness` 스킬로 에이전트 팀 구성을 검토**한 뒤 진행한다.
 
 ### 최근 추가 팀 — 작업 매칭 시 자동 호출
+
 - 코드 리뷰·PR 검토 → `code-reviewer` (스타일→보안→성능→아키텍처 5인 팀)
 - 테스트 작성·커버리지·CI 테스트 → `test-automation`
 - CI/CD·배포 파이프라인 → `cicd-pipeline`
@@ -107,7 +116,16 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
 - 모바일 앱 개발·UX·API연동·스토어 → `mobile-app-builder` (app-developer·ux-designer·api-integrator·qa-engineer·store-manager)
 
 ### 모든 코드 작업 — karpathy 4원칙 상시 적용
+
 - 코드 작성·리뷰·리팩터 시 `karpathy-guidelines`의 4원칙(Think Before Coding / Simplicity First / Surgical Changes / Goal-Driven Execution)을 항상 준수한다.
+
+### 코드 검증·작성 — codex 병행 호출 (codex@openai-codex 플러그인)
+
+- 코드를 **작성/구현**하거나 **검증/리뷰**할 때 codex 플러그인을 함께 호출해 교차 관점을 확보한다.
+  - 검증/리뷰: 구현 직후 `/codex:review`(read-only 리뷰). 강한 반증이 필요하면 `/codex:adversarial-review`로 codex의 독립 리뷰를 받는다.
+  - 작성/위임: 복잡하거나 위험한 변경은 `/codex:transfer`·`/codex:rescue`로 codex에 위임하고 결과는 `/codex:result`로 회수한다.
+  - codex 리뷰는 기존 `code-reviewer`/`verifier` 패스와 **별도 레인**으로 취급한다(자기승인 금지 원칙 유지).
+  - codex 미설치/미로그인 시 `/codex:setup`으로 준비한다. 준비 불가하면 기존 파이프라인으로 진행하고 사용자에게 알린다.
 
 ## MCP 자동 사용 규칙 (전체 프로젝트 적용)
 
@@ -135,6 +153,7 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
 ## 토큰 절약 규칙 (전역, 최우선 적용)
 
 ### 응답
+
 - 최대한 짧게. 인사·자기소개·요약 멘트 금지
 - 검증 결과는 한 줄 (`✅ typecheck OK`, `❌ build 실패: <원인>`)
 - 표는 ≤6행, 헤더 1단계, 시각적 박스/이모지 그래픽 금지
@@ -142,16 +161,19 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
 - "완료했습니다" 같은 명사구 금지 — 결과만
 
 ### 도구 사용
+
 - 같은 파일 반복 Read 금지
 - Bash 출력은 `| head -N` 또는 `| tail -N` 으로 limit (≤30 lines)
 - Grep/Glob 우선, 큰 파일 통째 Read 지양
 - 이미 알고 있는 정보는 다시 검증하지 않음
 
 ### 에이전트
+
 - subagent 는 사용자 명시 요청 또는 진짜 multi-step (≥3단계 독립 작업) 때만
 - 단순 수정·검증·1-2 step 작업은 직접 처리
 
 ### context
+
 - 긴 npm install / docker build 같은 장기 작업은 항상 `run_in_background`
 - 병렬 가능 작업은 한 메시지에 묶어서 호출
 - 이미 보고한 같은 진행상황 재보고 금지
@@ -212,6 +234,7 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
 ### 단순 작업 예외
 
 1줄 타이포 수정, 변수명 변경, 명백한 import 추가 등은 Layer 2-3 생략 가능. 의심되면 적용한다.
+
 ## 병렬 처리 기본화 (멀티 에이전트) — 명령어 없이 자동
 
 사용자가 `/team`·`/rdr` 같은 명령을 치지 않고 **일반 요청만 해도**, 비자명한 작업은 **기본적으로 병렬 멀티 에이전트로 처리**한다. 트리거 키워드·명령어 불필요 — 작업 복잡도로 스스로 판단한다.
@@ -222,4 +245,5 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
 - **장기 작업**(빌드·테스트·설치 등)은 항상 `run_in_background`.
 
 ### 병렬 예외 (직접 처리)
+
 1~2단계 자명한 작업(단일 파일 수정, 한 줄 답변, 단순 질의)은 오버헤드 방지를 위해 병렬 없이 직접 처리한다. 의심되면 병렬을 택한다.

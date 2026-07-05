@@ -11,6 +11,19 @@
       "description": "Apple/Swift 스킬 모음 (rshankras, MIT)",
       "license": "MIT",
       "category": "development"
+    },
+    {
+      "name": "codex",
+      "source": {
+        "source": "git-subdir",
+        "url": "openai/codex-plugin-cc",
+        "path": "plugins/codex"
+      },
+      "description": "Claude Code에서 Codex로 코드 리뷰·작업 위임 (OpenAI, Apache-2.0)",
+      "version": "1.0.5",
+      "author": { "name": "OpenAI" },
+      "license": "Apache-2.0",
+      "category": "development"
     }
   ]
 }
