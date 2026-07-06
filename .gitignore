@@ -17,6 +17,13 @@ plugins/data/
 plugins/oh-my-claudecode/
 plugins/SwiftUI-Agent-Skill/
 
+# 머신별 상태 파일 — 머신마다 install 경로가 다르므로 추적 제외
+plugins/installed_plugins.json
+plugins/known_marketplaces.json
+plugins/install-counts-cache.json
+plugins/blocklist.json
+plugins/config.json
+
 # Python 캐시
 __pycache__/
 *.pyc
