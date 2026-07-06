@@ -127,6 +127,18 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
   - codex 리뷰는 기존 `code-reviewer`/`verifier` 패스와 **별도 레인**으로 취급한다(자기승인 금지 원칙 유지).
   - codex 미설치/미로그인 시 `/codex:setup`으로 준비한다. 준비 불가하면 기존 파이프라인으로 진행하고 사용자에게 알린다.
 
+### 작업 완료 후 이중 리뷰 게이트 — Claude + Codex 둘 다 필수 (최우선)
+
+모든 코드 작업(구현·수정·리팩터)을 **끝내고 나면**, 완료를 보고·마무리하기 **전에** 아래 두 리뷰를 **로컬에서 반드시 둘 다** 실행한다. 하나만 돌리고 끝내지 않는다.
+
+1. **Claude 심층 리뷰** — `code-reviewer` 에이전트(필요 시 architecture-reviewer·style-inspector·performance-analyst 등 병렬)로 변경분을 리뷰. 자기승인 금지: 구현한 컨텍스트가 아니라 별도 리뷰 레인으로 돌린다.
+2. **Codex 심층 리뷰** — `codex exec -c sandbox_mode=read-only --skip-git-repo-check` (또는 `/codex:review`)로 동일 변경분을 독립 리뷰. 강한 반증이 필요하면 `/codex:adversarial-review`.
+
+- 두 리뷰는 **서로 독립 레인**이며 결과를 교차 대조한다. 한쪽이 놓친 걸 다른 쪽이 잡게 한다.
+- 리뷰 지적은 **맹목 적용 금지** — 유효성(오탐 여부)을 판단하고, 유효한 것만 surgical 하게 반영한 뒤 재검증(빌드/테스트)한다. 반영/보류 사유를 사용자에게 한 줄씩 보고한다.
+- Codex 미설치·미로그인으로 실행 불가하면 `/codex:setup` 시도, 그래도 안 되면 Claude 리뷰만 수행하고 **Codex를 건너뛴 사실을 반드시 사용자에게 알린다**.
+- 사소한 1줄 수정(타이포·주석)은 이 게이트를 생략할 수 있다.
+
 ## MCP 자동 사용 규칙 (전체 프로젝트 적용)
 
 ### sequential-thinking — 단계별 추론 자동 호출
