@@ -1,0 +1,18 @@
+{
+  "ios": {
+    "indicators": ["Package.swift", "Project.swift", "Workspace.swift", "Tuist.swift", "*.xcodeproj", "*.xcworkspace"],
+    "fileGlob": "*.swift",
+    "formatCmd": "mise exec -- swiftformat",
+    "testCmd": "make test",
+    "qualityGateModel": "claude-haiku-4-5-20251001",
+    "uiSkill": "swiftui"
+  },
+  "android": {
+    "indicators": ["settings.gradle", "settings.gradle.kts", "build.gradle", "build.gradle.kts"],
+    "fileGlob": "*.kt",
+    "formatCmd": "./gradlew ktlintFormat --",
+    "testCmd": "./gradlew test",
+    "qualityGateModel": "claude-haiku-4-5-20251001",
+    "uiSkill": "compose"
+  }
+}
