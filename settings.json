@@ -115,6 +115,12 @@
             "type": "command",
             "command": "$HOME/.claude/hooks/type-check.sh",
             "timeout": 60
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/quality-gate.sh",
+            "timeout": 120,
+            "statusMessage": "Quality Gate · 정적 품질 게이트"
           }
         ]
       },
@@ -138,6 +144,20 @@
             "type": "command",
             "command": "$HOME/.claude/hooks/handoff-on-failure.sh",
             "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/test.sh",
+            "asyncRewake": true,
+            "timeout": 600,
+            "statusMessage": "Test · 실행 중…",
+            "rewakeSummary": "❌ 테스트 실패"
           }
         ]
       }
