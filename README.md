@@ -118,7 +118,7 @@ cd ~/claude-config && git pull
 **10년차 시니어 Swift / iOS 개발자** 관점의 **읽기 전용** 코드 리뷰어.
 - Write/Edit 도구 미사용 — 의견만 출력
 - 심각도 표기: `[심각도: 상/중/하] 파일:라인 — 설명`
-- 관점: 로직 결함, SOLID 위반, 성능, 보안, 네이밍, 테스트 누락, **TCA Effect 누수 / retain cycle / @MainActor 격리**
+- 관점: 로직 결함, SOLID 위반, 성능, 보안, 네이밍, 테스트 누락, **불필요한 주석(이름 재진술 자명 주석)**, **TCA Effect 누수 / retain cycle / @MainActor 격리**
 
 ### 🧪 `@test-engineer`
 Swift Testing 기반 테스트 작성 전문 (TDD Red 단계).
@@ -226,6 +226,24 @@ claude plugin install apple-skills@roy-claude-config
 | `karpathy-guidelines` | **모든 코드 작업 상시** | 4원칙(Think/Simplicity/Surgical/Goal) |
 
 출처: [revfactory/harness](https://github.com/revfactory/harness), [revfactory/harness-100](https://github.com/revfactory/harness-100), [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills)
+
+## 🔁 작업 완료 후 이중 리뷰 게이트 (Claude + Codex)
+
+모든 코드 작업을 끝내면 완료를 보고하기 **전에**, 아래 두 리뷰를 **로컬에서 둘 다** 실행한다 (하나만 돌리지 않는다).
+
+1. **Claude 심층 리뷰** — `@code-reviewer`(필요 시 architecture/style/performance 병렬). 구현 컨텍스트가 아닌 **별도 레인**으로 (자기승인 금지).
+2. **Codex 심층 리뷰** — `codex exec ... sandbox_mode=read-only`(또는 `/codex:review`, 강한 반증은 `/codex:adversarial-review`).
+
+- 두 리뷰는 독립 레인으로 **교차 대조**한다.
+- 지적은 맹목 적용 금지 — **오탐 여부를 판단**해 유효한 것만 surgical 하게 반영 후 재검증(빌드/테스트). 반영/보류 사유를 한 줄씩 보고.
+- Codex 실행 불가 시 `/codex:setup` 시도, 그래도 안 되면 Claude 리뷰만 하고 **건너뛴 사실을 고지**.
+- 사소한 1줄 수정(타이포·주석)은 생략 가능.
+
+## ✍️ 주석 원칙
+
+- **불필요한 주석을 쓰지 않는다.** 이름·코드를 그대로 재진술하는 자명한 주석 금지.
+- 비자명한 **의도·트레이드오프·근거(왜 이렇게 했는지)**를 담은 꼭 필요한 주석만 남긴다.
+- `@code-reviewer`·`@code-simplifier`가 자명한 주석을 지적·제거한다.
 
 ## 🔔 자동 호출 키워드 (참고)
 
