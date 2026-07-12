@@ -120,6 +120,12 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
 
 - 코드 작성·리뷰·리팩터 시 `karpathy-guidelines`의 4원칙(Think Before Coding / Simplicity First / Surgical Changes / Goal-Driven Execution)을 항상 준수한다.
 
+### 결과 품질 상향 — `elevated-execution` 상시 적용 (모델 무관 Fable5급)
+
+- **Haiku/Sonnet/Opus 어느 모델이든** 대규모 리팩터·마이그레이션·비자명 디버깅에서는 `elevated-execution` 스킬의 실행 규율을 따른다: ① 증거(실제 빌드/테스트 로그) 없는 완료 주장 금지, ② 추측 수정 금지(로그 첫 에러부터), ③ 동작 보존·외과적 diff, ④ 검증 가능한 작은 그린 단위로 분해, ⑤ 그린마다 즉시 커밋·푸시.
+- **병렬화는 커플링 해소 후.** 조각 간 공유 타입은 먼저 공용 모듈로 승격·커밋·**푸시**한 뒤, 독립 조각을 **git worktree 격리**로 병렬 처리(각 조각은 자기 빌드 그린까지 책임). worktree 는 마지막 푸시된 원격에서 분기될 수 있으니 선행물은 반드시 먼저 push.
+- **iOS/Tuist 아키텍처 재편**(Domain/Data feature 모듈화)은 `tuist-microfeature-migration` 스킬의 절차·체크리스트를 그대로 따른다(공유 DTO monolith 유지, 네트워크 인프라 브리지, 엄브렐라·DI 배선, feature별 빌드 그린).
+
 ### 코드 검증·작성 — codex 병행 호출 (codex@openai-codex 플러그인)
 
 - 코드를 **작성/구현**하거나 **검증/리뷰**할 때 codex 플러그인을 함께 호출해 교차 관점을 확보한다.
