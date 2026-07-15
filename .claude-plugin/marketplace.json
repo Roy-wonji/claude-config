@@ -1,10 +1,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/refs/heads/main/marketplace/marketplace.schema.json",
-  "name": "roy-claude-config",
+  "name": "roy",
   "version": "1.0.0",
   "owner": { "name": "Roy", "email": "suhwj81@gmail.com" },
   "metadata": { "description": "Roy 개인 Claude 설정 마켓플레이스" },
   "plugins": [
+    {
+      "name": "roy",
+      "source": "./",
+      "description": "roy 하네스 — /workflow 등 루트 커맨드·스킬·에이전트",
+      "category": "development"
+    },
     {
       "name": "apple-skills",
       "source": "./apple-skills",
