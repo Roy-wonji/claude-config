@@ -49,6 +49,16 @@
 | `docs/external-swift-agent-skills.md` | [twostraws/swift-agent-skills](https://github.com/twostraws/swift-agent-skills) (© 2026 Paul Hudson, MIT) | 카탈로그 README |
 | `docs/external-agents-md/SwiftAgents.md` | [twostraws/SwiftAgents](https://github.com/twostraws/SwiftAgents) (© Paul Hudson) | AGENTS.md 템플릿 — 원 저장소에 LICENSE 표기 없으나 공개 가이드 자료로 출처를 명시해 참조 용도로 보존. 재배포가 문제 되는 경우 즉시 제거한다. |
 
+## spec-kit (Spec-Driven Development)
+
+| 경로 | 출처 | 저작권 | 라이선스 |
+|---|---|---|---|
+| `skills/speckit-*/`, `spec-kit/` | [github/spec-kit](https://github.com/github/spec-kit) | © GitHub, Inc. | MIT |
+
+> `specify init --integration claude` 로 렌더링한 산출물을 vendoring 했다.
+> `skills/speckit-*` 는 원본 그대로이며, `skills/speckit-init` 와 `scripts/speckit-init.sh` 는
+> 프로젝트에 `.specify/` 를 스캐폴딩하기 위해 자체 추가한 것이다.
+
 ---
 
 원문 라이선스 전문은 각 저장소의 `LICENSE` 파일을 참조한다.
