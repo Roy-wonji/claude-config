@@ -9,6 +9,18 @@ user-invocable: true
 disable-model-invocation: false
 ---
 
+## Bootstrap (자동)
+
+이 스킬은 프로젝트 루트의 `.specify/` 를 전제로 한다. **본문 작업을 시작하기 전에** 먼저 실행한다:
+
+```bash
+[ -d .specify ] || "${CLAUDE_PLUGIN_ROOT}/scripts/speckit-init.sh"
+```
+
+이미 `.specify/` 가 있으면 아무 일도 일어나지 않는다. 없으면 roy 플러그인에 vendoring 된
+spec-kit 자산이 복사된다. 별도 초기화 커맨드를 사용자가 실행할 필요는 없다.
+`CLAUDE_PLUGIN_ROOT` 가 비어 있으면 `speckit-init` 스킬을 대신 호출한다.
+
 
 ## User Input
 
