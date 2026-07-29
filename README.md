@@ -189,8 +189,8 @@ iOS 시뮬레이터 자동화 스크립트 모음(빌드/UI 네비게이션/접�
 ### 🏛️ `fable-grade`
 현재 모델(Haiku/Sonnet/Opus) 산출물을 **Fable-5급 시니어 결과에 가깝게** 끌어올리는 작업 프로토콜. **모델을 Fable 5로 바꾸는 게 아니라**(불가능) 작업 규율을 강제해 지금 모델의 최대치를 뽑는다. 아키텍처 설계·멀티파일 리팩터·마이그레이션·근인 디버깅에 발동. 8기둥(근거 우선 `파일:라인`·규약 추출·근인 1문장·현실 규모 단순화·트레이드오프 표면화·검증 가능한 마이그레이션·하드 제약 존중)을 체크리스트로 밟는다. iOS/Tuist 워크드 레퍼런스(xcconfig base+#include 상속, 단일 타깃+다중 config, 워크스페이스 config 일관성, 중나식 레이어드 모듈) 포함.
 
-### 📦 전체 스킬 인벤토리 (54개)
-agent-council,app-store-changelog apple-design-system,apple-skills clean-architecture,commit fable-grade,figma-pencil-ui-fallback,ios-accessibility ios-debugger-agent,ios-performance ios-performance-optimizer,ios-performance-pfw ios-performance-uikit-guide,ios-simulator ios-simulator-skill,ios-uikit-expert pfw-case-paths,pfw-composable-architecture pfw-custom-dump,pfw-dependencies pfw-identified-collections,pfw-issue-reporting pfw-macro-testing,pfw-modern-swiftui pfw-observable-models,pfw-perception pfw-pfw,pfw-sharing pfw-snapshot-testing,pfw-spm pfw-sqlite-data,pfw-structured-queries pfw-swift-navigation,pfw-testing reactorkit-expert,rxswift-expert skill-creator,swift-api-design-guidelines swift-concurrency,swift-concurrency-pro swift-ios-skills,swift-security-expert swift-testing-pro,swiftdata-pro swiftui-auditor,swiftui-liquid-glass swiftui-pro,swiftui-ui-patterns swiftui-uikit-interop,swiftui-view-refactor tca-optimizer,tdd thought-based-reasoning
+### 📦 전체 스킬 인벤토리 (36개)
+agent-council,app-store-changelog apple-design-system,apple-skills clean-architecture,commit fable-grade,figma-pencil-ui-fallback,ios-accessibility ios-debugger-agent,ios-performance ios-performance-optimizer,ios-performance-pfw ios-performance-uikit-guide,ios-simulator ios-simulator-skill,ios-uikit-expert reactorkit-expert,rxswift-expert skill-creator,swift-api-design-guidelines swift-concurrency,swift-concurrency-pro swift-ios-skills,swift-security-expert swift-testing-pro,swiftdata-pro swiftui-auditor,swiftui-liquid-glass swiftui-pro,swiftui-ui-patterns swiftui-uikit-interop,swiftui-view-refactor tca-optimizer,tdd thought-based-reasoning
 
 > 로컬 `~/.claude/skills` 변경은 `scripts/sync-skills.sh` (Stop 훅)로 자동 동기화됨.
 
