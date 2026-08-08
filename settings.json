@@ -166,7 +166,9 @@
     "figma@claude-plugins-official": true,
     "apple-skills@roy-claude-config": true,
     "warp@claude-code-warp": true,
-    "codex@openai-codex": true
+    "codex@openai-codex": true,
+    "headroom@headroom-marketplace": true,
+    "claude-mem@thedotmack": true
   },
   "extraKnownMarketplaces": {
     "omc": {
@@ -197,6 +199,18 @@
       "source": {
         "source": "github",
         "repo": "openai/codex-plugin-cc"
+      }
+    },
+    "headroom-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "headroomlabs-ai/headroom"
+      }
+    },
+    "thedotmack": {
+      "source": {
+        "source": "github",
+        "repo": "thedotmack/claude-mem"
       }
     }
   },
