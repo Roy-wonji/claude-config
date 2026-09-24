@@ -1,0 +1,37 @@
+Usage: gemini [options] [command]
+
+Gemini CLI - Launch an interactive CLI, use -p/--prompt for non-interactive mode
+
+명령:
+  gemini      Launch Gemini CLI  [기본값]
+  gemini mcp  Manage MCP servers
+
+옵션:
+  -m, --model                     Model  [문자열]
+  -p, --prompt                    Prompt. Appended to input on stdin (if any).  [문자열]
+  -i, --prompt-interactive        Execute the provided prompt and continue in interactive mode  [문자열]
+  -s, --sandbox                   Run in sandbox?  [불리언]
+      --sandbox-image             Sandbox image URI.  [문자열]
+  -d, --debug                     Run in debug mode?  [불리언] [기본값: false]
+  -a, --all-files                 Include ALL files in context?  [불리언] [기본값: false]
+      --all_files                 Include ALL files in context?  [deprecated: Use --all-files instead. We will be removing --all_files in the coming weeks.] [불리언] [기본값: false]
+      --show-memory-usage         Show memory usage in status bar  [불리언] [기본값: false]
+      --show_memory_usage         Show memory usage in status bar  [deprecated: Use --show-memory-usage instead. We will be removing --show_memory_usage in the coming weeks.] [불리언] [기본값: false]
+  -y, --yolo                      Automatically accept all actions (aka YOLO mode, see https://www.youtube.com/watch?v=xvFZjo5PgG0 for more details)?  [불리언] [기본값: false]
+      --approval-mode             Set the approval mode: default (prompt for approval), auto_edit (auto-approve edit tools), yolo (auto-approve all tools)  [문자열] [선택지: "default", "auto_edit", "yolo"]
+      --telemetry                 Enable telemetry? This flag specifically controls if telemetry is sent. Other --telemetry-* flags set specific values but do not enable telemetry on their own.  [불리언]
+      --telemetry-target          Set the telemetry target (local or gcp). Overrides settings files.  [문자열] [선택지: "local", "gcp"]
+      --telemetry-otlp-endpoint   Set the OTLP endpoint for telemetry. Overrides environment variables and settings files.  [문자열]
+      --telemetry-log-prompts     Enable or disable logging of user prompts for telemetry. Overrides settings files.  [불리언]
+      --telemetry-outfile         Redirect all telemetry output to the specified file.  [문자열]
+  -c, --checkpointing             Enables checkpointing of file edits  [불리언] [기본값: false]
+      --experimental-acp          Starts the agent in ACP mode  [불리언]
+      --allowed-mcp-server-names  Allowed MCP server names  [배열]
+  -e, --extensions                A list of extensions to use. If not provided, all extensions are used.  [배열]
+  -l, --list-extensions           List all available extensions and exit.  [불리언]
+      --proxy                     Proxy for gemini client, like schema://user:password@host:port  [문자열]
+      --include-directories       Additional directories to include in the workspace (comma-separated or multiple --include-directories)  [배열]
+  -v, --version                   버전 표시  [불리언]
+  -h, --help                      도움말 표시  [불리언]
+
+알 수 없는 인수입니다: 1+1은? 숫자만
