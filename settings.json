@@ -147,20 +147,6 @@
           }
         ]
       }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/test.sh",
-            "asyncRewake": true,
-            "timeout": 600,
-            "statusMessage": "Test · 실행 중…",
-            "rewakeSummary": "❌ 테스트 실패"
-          }
-        ]
-      }
     ]
   },
   "statusLine": {
