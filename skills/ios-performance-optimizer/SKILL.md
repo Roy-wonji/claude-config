@@ -1,6 +1,6 @@
 ---
 name: ios-performance-optimizer
-description: "PFW 철학 통합 자동화 시스템 (v4.0) - Point-Free Workshop 단순성 원칙 최우선 적용, 12개 서브에이전트 동시 실행, TCAFlow & WeaveDI 3.4.1 전문, 타입 안전한 상태 검증 자동 구현. Swift 프로젝트 자동 감지시 PFW 패턴 기반 최적화 실행. TCA ifCaseLet 오류, Effect 취소, 메모리 누수, SwiftUI 성능 전문."
+description: "PFW 철학 통합 자동화 시스템 (v4.0) - Point-Free Workshop 단순성 원칙 최우선 적용, 12개 서브에이전트 동시 실행, TCAFlow &."
 ---
 
 # iOS Performance + PFW 철학 통합 최적화 Agent (v4.0)
