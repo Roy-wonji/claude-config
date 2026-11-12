@@ -1,0 +1,8 @@
+{
+  "git": {
+    "baseBranch": "main"
+  },
+  "tracking": {
+    "dir": ".tracking"
+  }
+}
