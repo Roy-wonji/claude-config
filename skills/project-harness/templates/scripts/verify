@@ -17,6 +17,17 @@ import time
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "hooks"))
 import harness_state as hs  # noqa: E402
 
+def valid_step(step):
+    def str_list(v):
+        return isinstance(v, list) and all(isinstance(x, str) for x in v)
+    return (isinstance(step, dict) and isinstance(step.get("name"), str) and step["name"]
+            and str_list(step.get("cmd")) and step["cmd"]
+            and str_list(step.get("paths", []))
+            and isinstance(step.get("cwd", "."), str)
+            and isinstance(step.get("env", {}), dict) and all(isinstance(k, str) and isinstance(v, str) for k, v in step.get("env", {}).items())
+            and isinstance(step.get("fail_if_log_matches", ""), str))
+
+
 def steps_for(files, run_all):
     """.claude/harness.json 의 verify.steps 중 바뀐 경로에 해당하는 단계.
 
@@ -34,7 +45,7 @@ def steps_for(files, run_all):
     verify_cfg = hs.config().get("verify")
     raw = verify_cfg.get("steps") if isinstance(verify_cfg, dict) else None
     for step in raw if isinstance(raw, list) else []:
-        if not (isinstance(step, dict) and isinstance(step.get("name"), str) and isinstance(step.get("cmd"), list)):
+        if not valid_step(step):
             print(f"harness.json verify 단계 형식 오류, 건너뜀: {step}")
             continue
         if touched(step.get("paths", [])):

@@ -61,34 +61,37 @@ def main():
         markers = [m for m in rule.get("markers", []) if isinstance(m, str)]
         if any(glob.glob(os.path.join(root, m)) for m in markers):
             stacks.append(name)
-            wanted += [s for s in rule.get("skills", []) if isinstance(s, str) and s not in wanted]
+            wanted += [s for s in rule.get("skills", [])
+                       if isinstance(s, str) and s == os.path.basename(s) and s not in ("", ".", "..") and s not in wanted]
     if not wanted:
         return
 
     dest_dir = os.path.join(root, ".claude", "skills")
-    linked = []
-    for skill in wanted:
-        src = os.path.join(library, skill)
-        dst = os.path.join(dest_dir, skill)
-        if not os.path.isdir(src) or os.path.lexists(dst) or os.path.exists(os.path.join(GLOBAL_SKILLS, skill)):
-            continue
-        os.makedirs(dest_dir, exist_ok=True)
-        os.symlink(src, dst)
-        linked.append(skill)
-    if not linked:
+    todo = [s for s in wanted
+            if os.path.isdir(os.path.join(library, s)) and not os.path.lexists(os.path.join(dest_dir, s))
+            and not os.path.exists(os.path.join(GLOBAL_SKILLS, s))]
+    if not todo:
         return
 
+    # git 제외 등록이 성공해야 링크를 만든다(실패하면 저장소에 미추적 파일이 생기므로 아무것도 하지 않는다).
     exclude = exclude_file(root)
-    if exclude:
-        try:
-            existing = open(exclude, encoding="utf-8").read().splitlines() if os.path.exists(exclude) else []
-            lines = [f"/.claude/skills/{s}" for s in linked if f"/.claude/skills/{s}" not in existing]
-            if lines:
-                os.makedirs(os.path.dirname(exclude), exist_ok=True)
-                with open(exclude, "a", encoding="utf-8") as f:
-                    f.write(("\n" if existing and existing[-1] else "") + "\n".join(lines) + "\n")
-        except OSError:
-            pass
+    if not exclude:
+        return
+    try:
+        existing = open(exclude, encoding="utf-8").read().splitlines() if os.path.exists(exclude) else []
+        lines = [f"/.claude/skills/{s}" for s in todo if f"/.claude/skills/{s}" not in existing]
+        if lines:
+            os.makedirs(os.path.dirname(exclude), exist_ok=True)
+            with open(exclude, "a", encoding="utf-8") as f:
+                f.write(("\n" if existing and existing[-1] else "") + "\n".join(lines) + "\n")
+    except OSError:
+        return
+
+    linked = []
+    for skill in todo:
+        os.makedirs(dest_dir, exist_ok=True)
+        os.symlink(os.path.join(library, skill), os.path.join(dest_dir, skill))
+        linked.append(skill)
 
     print(json.dumps({"hookSpecificOutput": {
         "hookEventName": "SessionStart",
