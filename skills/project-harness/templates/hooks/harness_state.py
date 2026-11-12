@@ -19,19 +19,24 @@ def config():
     """.claude/harness.json. 훅이 어느 폴더에서 불려도 이 파일 위치(.claude/hooks/..)를 기준으로 찾는다."""
     try:
         with open(os.path.join(_HERE, "..", "harness.json"), encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
     except (OSError, ValueError):
         return {}
+    return data if isinstance(data, dict) else {}  # 형식이 틀리면 기본값으로 동작한다(훅이 세션을 막지 않게)
+
+
+def _strs(value):
+    return tuple(v for v in value if isinstance(v, str)) if isinstance(value, list) else ()
 
 
 _CFG = config()
 # 검증이 필요한 코드 경로. 문서(.claude/ · *.md)만 바뀌면 검증하지 않는다.
-CODE_DIRS = tuple(_CFG.get("code_dirs", []))
-CODE_FILES = tuple(_CFG.get("code_files", []))
-BASE_REFS = tuple(_CFG.get("base_refs", ["origin/develop", "develop", "origin/main", "main"]))
+CODE_DIRS = _strs(_CFG.get("code_dirs"))
+CODE_FILES = _strs(_CFG.get("code_files"))
+BASE_REFS = _strs(_CFG.get("base_refs")) or ("origin/develop", "develop", "origin/main", "main")
 STATE_DIR = os.path.join(".claude", "state")
 VERIFY_FILE = os.path.join(STATE_DIR, "verify.json")
-MAX_FAILURES = int(_CFG.get("max_failures", 2))  # 같은 단계가 이 횟수만큼 연속 실패하면 사용자에게 보고한다
+MAX_FAILURES = _CFG["max_failures"] if isinstance(_CFG.get("max_failures"), int) else 2  # 같은 단계가 이 횟수만큼 연속 실패하면 사용자에게 보고한다
 
 
 def git(root, *args, env=None):

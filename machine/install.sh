@@ -30,8 +30,12 @@ fi
 log "기존 설정 백업: $BACKUP"
 mkdir -p "$CLAUDE_DIR" "$BACKUP"
 for item in CLAUDE.md settings.json hooks hud scripts; do
-  [ -e "$CLAUDE_DIR/$item" ] && cp -R "$CLAUDE_DIR/$item" "$BACKUP/"
+  if [ -e "$CLAUDE_DIR/$item" ]; then cp -R "$CLAUDE_DIR/$item" "$BACKUP/"; fi
 done
+# skills 는 덮어쓰기 전에 백업한다. gstack 은 1GB 가까워 제외하고 아래에서 기존 것을 건드리지 않는다.
+if [ -d "$CLAUDE_DIR/skills" ]; then
+  rsync -a --exclude gstack "$CLAUDE_DIR/skills/" "$BACKUP/skills/"
+fi
 
 log "CLAUDE.md · hooks · hud · scripts 설치"
 cp "$HERE/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
@@ -92,14 +96,15 @@ if [ -z "${SKIP_GSTACK:-}" ]; then
     FAILED+=("gstack(xcode-clt)")
   else
     G="$CLAUDE_DIR/skills/gstack"
-    [ -d "$G/.git" ] || git clone -q https://github.com/garrytan/gstack.git "$G"
-    git -C "$G" fetch -q origin
-    git -C "$G" checkout -q "$GSTACK_REF"
-    if [ "$(git -C "$G" rev-parse HEAD)" != "$GSTACK_REF" ]; then
-      warn "gstack 커밋 불일치 — setup 실행 안 함"
-      FAILED+=("gstack(ref)")
-    else
+    if [ -d "$G/.git" ]; then
+      # 이미 있는 gstack 은 사용자가 쓰던 상태일 수 있어 바꾸지 않는다(업데이트는 /gstack-upgrade).
+      echo "  기존 gstack 유지: $(git -C "$G" rev-parse --short HEAD 2>/dev/null)"
+    elif git clone -q https://github.com/garrytan/gstack.git "$G" && git -C "$G" checkout -q "$GSTACK_REF" \
+         && [ "$(git -C "$G" rev-parse HEAD)" = "$GSTACK_REF" ]; then
       (cd "$G" && ./setup) || FAILED+=("gstack(setup)")
+    else
+      warn "gstack clone/checkout 실패 또는 커밋 불일치 — setup 실행 안 함"
+      FAILED+=("gstack(ref)")
     fi
   fi
 fi

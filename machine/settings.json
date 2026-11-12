@@ -34,9 +34,7 @@
       "Skill(keybindings-help:*)",
       "Write",
       "mcp__figma",
-      "mcp__plugin_app-harness_github__push_files",
       "mcp__context7__query-docs",
-      "mcp__plugin_app-harness_github__delete_file",
       "mcp__pencil"
     ],
     "deny": [

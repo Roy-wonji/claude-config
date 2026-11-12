@@ -31,7 +31,12 @@ def steps_for(files, run_all):
         return any(f == p or f.startswith(p.rstrip("/") + "/") for f in files for p in prefixes)
 
     steps = []
-    for step in hs.config().get("verify", {}).get("steps", []):
+    verify_cfg = hs.config().get("verify")
+    raw = verify_cfg.get("steps") if isinstance(verify_cfg, dict) else None
+    for step in raw if isinstance(raw, list) else []:
+        if not (isinstance(step, dict) and isinstance(step.get("name"), str) and isinstance(step.get("cmd"), list)):
+            print(f"harness.json verify 단계 형식 오류, 건너뜀: {step}")
+            continue
         if touched(step.get("paths", [])):
             steps.append((step["name"], step["cmd"], step.get("cwd", "."), step.get("env", {}),
                           step.get("fail_if_log_matches", "")))

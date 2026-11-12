@@ -19,11 +19,13 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # -I 실행이라 직접 넣는다
 import harness_state as hs  # noqa: E402
 
-GIT_CFG = hs.config().get("git", {})
+GIT_CFG = hs.config().get("git")
+if not isinstance(GIT_CFG, dict):
+    GIT_CFG = {}
 TYPES = "|".join(GIT_CFG.get("commit_types", ["feat", "fix", "refactor", "test", "docs", "chore", "build", "release"]))
 REQUIRE_ISSUE = GIT_CFG.get("require_issue", True)
 REQUIRE_KOREAN = GIT_CFG.get("require_korean", True)
-MAX_SUBJECT = int(GIT_CFG.get("max_subject", 50))
+MAX_SUBJECT = GIT_CFG["max_subject"] if isinstance(GIT_CFG.get("max_subject"), int) else 50
 MESSAGE_FORMAT = "{타입}: {설명} #{이슈번호}" if REQUIRE_ISSUE else "{타입}: {설명}"
 MESSAGE_RE = re.compile(rf"^({TYPES}): .+ #[0-9]+$" if REQUIRE_ISSUE else rf"^({TYPES}): .+$")
 BRANCH_PATTERN = GIT_CFG.get("branch_pattern", r"^feature/[a-z0-9]+(-[a-z0-9]+)*$")
