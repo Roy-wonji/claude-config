@@ -1,0 +1,30 @@
+{
+  "library": "~/.claude/skill-library",
+  "stacks": {
+    "android": {
+      "markers": [
+        "app/src/main/AndroidManifest.xml",
+        "*/app/src/main/AndroidManifest.xml",
+        "*/src/main/AndroidManifest.xml",
+        "android/*/src/main/AndroidManifest.xml"
+      ],
+      "skills": [
+        "jetpack-compose-performance",
+        "adaptive",
+        "edge-to-edge",
+        "navigation-3",
+        "testing-setup",
+        "kotlin-tooling-agp9-migration"
+      ]
+    },
+    "kmp": {
+      "markers": [
+        "*/src/commonMain",
+        "*/*/src/commonMain"
+      ],
+      "skills": [
+        "kotlin-tooling-native-build-performance"
+      ]
+    }
+  }
+}

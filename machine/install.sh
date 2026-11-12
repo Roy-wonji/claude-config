@@ -52,6 +52,12 @@ log "로컬 스킬 설치"
 mkdir -p "$CLAUDE_DIR/skills"
 rsync -a "$HERE/skills/" "$CLAUDE_DIR/skills/"
 
+log "프로젝트별 스킬 라이브러리·매핑 설치 (SessionStart 훅이 스택 감지 후 링크)"
+mkdir -p "$CLAUDE_DIR/skill-library"
+rsync -a "$HERE/skill-library/" "$CLAUDE_DIR/skill-library/"
+if [ -e "$CLAUDE_DIR/project-skills.json" ]; then cp "$CLAUDE_DIR/project-skills.json" "$BACKUP/"; fi
+cp "$HERE/project-skills.json" "$CLAUDE_DIR/project-skills.json"
+
 # 3) 마켓플레이스·플러그인 (개별 실패는 기록 후 계속)
 if [ -z "${SKIP_PLUGINS:-}" ]; then
   log "마켓플레이스 등록"
