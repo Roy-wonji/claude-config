@@ -45,6 +45,15 @@ for d in hooks hud scripts; do
 done
 chmod +x "$CLAUDE_DIR"/hooks/*.sh "$CLAUDE_DIR"/scripts/*.sh 2>/dev/null || true
 
+log "Codex 전역 지침 기본 파일 (없을 때만, 예전 링크는 실제 파일로 바꿈)"
+mkdir -p "$HOME/.codex"
+for item in AGENTS.md agents; do
+  if [ -L "$HOME/.codex/$item" ]; then
+    target="$(readlink "$HOME/.codex/$item")"; rm "$HOME/.codex/$item"; cp -R "$target" "$HOME/.codex/$item"
+  fi
+done
+[ -e "$HOME/.codex/AGENTS.md" ] || cp "$HERE/../codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
+
 log "Claude · Codex 병렬 리뷰 설정 (기존 지침·에이전트 보존)"
 python3 "$HERE/install_review.py"
 
