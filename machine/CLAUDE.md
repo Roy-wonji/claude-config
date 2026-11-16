@@ -101,10 +101,9 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
 
 ## 멀티 에이전트 코드 리뷰 (Claude + Codex)
 
-- 리뷰 · PR 검토 요청은 `code-reviewer` 스킬(roy)로 한다: 스타일 · 보안 · 성능 · 아키텍처 에이전트 + 내장 `/code-review` + Codex 서브에이전트(`security_reviewer` · `performance_reviewer` · `architecture_reviewer`)를 병렬로 돌리고 `review-synthesizer`가 종합한다. 작은 변경(파일 1~2개)은 `/code-review` 하나로 끝낸다.
-- 리뷰 기준은 저장소 루트 `REVIEW.md`(템플릿: `~/.claude/claude-config/templates/REVIEW.md`)와 `CLAUDE.md`다. 로컬 `/code-review`는 `REVIEW.md`를 읽지 않으므로 공통 규칙은 `CLAUDE.md`에 둔다.
-- 부딪히는 의견은 "가독성 우선안 · 성능 우선안"처럼 두 안을 비교해 고른다. 모든 지적에 `파일:줄` 근거를 단다.
-- 클라우드 `/ultrareview`는 보안 · 결제 · 마이그레이션처럼 깊은 검증이 필요할 때만 사용자에게 제안한다(비용).
+- 리뷰 실행 방식은 이 파일 끝의 "병렬 리뷰 실행 계약"(설치 때 `machine/install_review.py`가 넣는다)을 따른다. 스타일까지 포함한 팀 리뷰가 필요하면 roy `code-reviewer` 스킬을 쓴다.
+- 저장소 리뷰 기준은 루트 `REVIEW.md`다. 없으면 `~/.claude/claude-config/templates/REVIEW.md`로 만든다.
+- 리뷰 봇이 없는 저장소는 PR을 올리기 전에 로컬 병렬 리뷰를 먼저 돌리고 지적을 반영한다.
 
 ## 핵심 코딩 원칙 (4원칙) — 최우선
 
@@ -264,24 +263,3 @@ When the user types `/graphify`, use the installed graphify skill or instruction
 - 여러 단계 구현·디자인 대조·마이그레이션 작업은 Ralph Loop로 진행한다. 시작 명령은 `/ralph-loop "<작업과 검증 기준>" --max-iterations <N> --completion-promise "<완료 문장>"`이다. 반복 횟수 상한과 완료 문장을 반드시 준다. 완료 문장은 검증 기준을 증거로 확인했을 때만 출력한다.
 - 위의 비용 제한(10분 무편집·같은 접근 2회 실패 시 멈춤, 승인 없는 세 번째 시도 금지)이 Ralph Loop보다 우선한다. 루프 안에서도 같은 접근이 두 번 실패하면 `/cancel-ralph`로 멈추고 보고한다.
 - 사용자가 같은 지적을 두 번 이상 하거나 지켜야 할 규칙이 생기면 `/hookify`로 훅 규칙을 만든다.
-
-<!-- ROY:REVIEW:START -->
-## 공통 프로젝트 하네스 (Claude · Codex)
-
-- 작업 시작 시 cwd·git 상태와 AGENTS.md·CLAUDE.md를 확인한다. CLAUDE.md 색인에서 필요한 `.claude/docs/`만 읽고, 변경 경로에 맞는 `.claude/rules/` frontmatter와 규칙을 직접 확인한다. 없으면 저장소 README·기여 가이드·빌드 설정을 따른다.
-- 규칙 원본은 각 저장소에 유지하고 AGENTS.md는 원본으로 연결한다. 특정 프로젝트의 플랫폼·브랜치·이슈·커밋 규칙을 전역에 복제하지 않는다. 전역 기본값은 프로젝트 규칙을 보완한다.
-- 이해 → 구현 → 검증 → 독립 리뷰 → 결과 보고 순서로 진행한다. 승인된 명확하고 되돌릴 수 있는 작업은 계속한다. 사용자 변경·기존 OMC/OMX 설정·에이전트·훅과 재시도·비용·승인 제한을 보존한다.
-- Codex에는 Claude 훅이 자동 적용되지 않는다. 저장소가 요구하는 검증·git 규칙 검사를 직접 실행한다. `.claude/scripts/verify`가 있으면 사용법과 대상 경로를 확인하고 사용한다. 없으면 프로젝트 lint·typecheck·test를 따른다. 문서만 바뀌면 불필요한 전체 빌드를 생략한다.
-- 실제 검증 명령·종료 코드·한계를 보고한다. Claude 훅을 Codex 이벤트에 무조건 등록하지 않는다. 의미 있는 코드 변경은 아래 독립 리뷰를 적용하고 단순 질의·오타는 규모에 맞게 줄인다.
-
-## 병렬 리뷰 실행 계약
-
-- 리뷰·PR 검토와 의미 있는 코드 변경 후 적용한다. 오래된 리뷰 팀·순차 실행 지침보다 이 계약을 우선한다.
-- 메인은 정확성·회귀·엣지 케이스를 본다. 독립 검토가 유용하면 보안·성능·아키텍처를 실제 서브에이전트로 병렬 실행한다. 작은 변경도 인증·동시성·모듈 경계에 영향이 있으면 해당 역할을 포함한다.
-- Claude: `security-reviewer`, `performance-reviewer`, `architecture-reviewer`. Codex: `security_reviewer`, `performance_reviewer`, `architecture_reviewer`. 없으면 범용 에이전트에 역할을 명시한다. 동시 실행 한도를 따른다.
-- 메인은 기준 커밋·diff·범위·검증 결과를 공유하고 변경 시 재검토한다. 리뷰어는 프로젝트 규칙과 REVIEW.md를 읽는다.
-- 리뷰어는 코드·설정을 수정하거나 에이전트·교차 CLI를 재귀 호출하지 않고 결과만 반환한다. Claude 리뷰어는 읽기 도구만 사용한다. Codex의 읽기 전용 지침은 권한 격리가 아니며 부모 권한을 따른다.
-- 독립 의견 수집 후 메인이 실제 코드·반례로 재검증하고 중복을 합친다. 다수결을 검증으로 대체하지 않는다. 심각도(high/medium/low), 파일:줄, 재현 조건, 영향, 수정 방향, 관련 규칙을 보고한다. 취향·추측과 결함을 구분하고 상충 의견의 실제 트레이드오프를 설명한다.
-- 미검증·누락을 밝힌다. 역할극은 독립 리뷰가 아니다. 도구가 없으면 단일 리뷰로 보고한다. 자동 머지·댓글 게시하지 않는다.
-- 내장 `/code-review`는 대안이며 매번 중복 실행하지 않는다. REVIEW.md를 자동으로 읽지 않으므로 CLAUDE.md에서 핵심 규칙에 연결한다. `/code-review ultra`(`/ultrareview`)는 명시적 클라우드 업로드·실행 경로다. GitHub 관리형 리뷰는 조직·앱 연결이 별도로 필요하다.
-<!-- ROY:REVIEW:END -->
