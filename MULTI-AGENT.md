@@ -36,3 +36,15 @@
 - 공통 기준: 저장소 루트 `REVIEW.md` (템플릿 `templates/REVIEW.md`). PR 자동 리뷰 · Codex · roy 리뷰 팀이 읽는다. 로컬 `/code-review`는 `CLAUDE.md`만 읽는다.
 - Codex 파일: `codex/AGENTS.md`(전역 지침) · `codex/agents/*.toml`(서브에이전트). `machine/install.sh`가 `~/.codex/`에 링크한다.
 
+
+## 전역 설치와 실제 적용 범위
+
+`python3 machine/install_review.py`는 기존 지침과 에이전트를 보존하며 Claude와 Codex 리뷰 설정만 설치한다. 일반 `~/.codex`와 현재 `CODEX_HOME` 모두에 적용하고 기존 파일은 `~/.claude/backups/review-*`에 백업한다. 다른 프로필은 `--codex-home <경로>`로 명시한다. 전체 `machine/install.sh`도 같은 설치기를 사용한다.
+
+실행 계약은 `codex/REVIEW-POLICY.md`다. 이 계약이 위의 과거 중복 리뷰 파이프라인보다 우선한다. Claude는 `review-agents/`의 보안·성능·아키텍처 리뷰어, Codex는 `codex/agents/`의 역할을 사용한다. 메인이 정확성과 최종 근거를 검토한다. 새 세션에서 적용된다.
+
+로컬 `/code-review`는 모든 플랜에서 이용 가능하지만 여러 전문 리뷰어의 병렬 실행을 보장하지 않는다. `/code-review ultra`(`/ultrareview`)는 명시적 클라우드 경로다. GitHub 관리형 Code Review는 조직 Owner의 활성화와 GitHub App 연결이 별도로 필요하다. `REVIEW.md`는 관리형 리뷰에서 base/default branch의 버전을 사용하므로 파일 작성만으로 서비스가 활성화되지는 않는다.
+
+공식 문서: [Claude 로컬 리뷰](https://code.claude.com/docs/en/code-review-local), [클라우드 리뷰](https://code.claude.com/docs/en/ultrareview), [GitHub 설정](https://code.claude.com/docs/en/code-review-setup), [Codex 서브에이전트](https://learn.chatgpt.com/docs/agent-configuration/subagents).
+
+공통 하네스 계약은 `codex/HARNESS-POLICY.md`다. Claude·Codex 모두 저장소 `CLAUDE.md`와 `.claude/docs/`, 경로별 `.claude/rules/`를 원본으로 읽고, Codex는 Claude 훅 대신 필요한 검증을 직접 실행한다.

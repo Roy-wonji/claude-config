@@ -45,13 +45,8 @@ for d in hooks hud scripts; do
 done
 chmod +x "$CLAUDE_DIR"/hooks/*.sh "$CLAUDE_DIR"/scripts/*.sh 2>/dev/null || true
 
-log "Codex 전역 지침 · 리뷰 에이전트 연결 (~/.codex/AGENTS.md · ~/.codex/agents)"
-CODEX_DIR="$HOME/.codex"
-mkdir -p "$CODEX_DIR"
-for item in AGENTS.md agents; do
-  if [ -e "$CODEX_DIR/$item" ] && [ ! -L "$CODEX_DIR/$item" ]; then mv "$CODEX_DIR/$item" "$BACKUP/codex-$item"; fi
-  ln -sfn "$HERE/../codex/$item" "$CODEX_DIR/$item"
-done
+log "Claude · Codex 병렬 리뷰 설정 (기존 지침·에이전트 보존)"
+python3 "$HERE/install_review.py"
 
 log "settings.json 설치 (비공개 오버레이: $BUNDLE_DIR/settings.private.json)"
 python3 "$HERE/merge_settings.py" "$HERE/settings.json" "$BUNDLE_DIR/settings.private.json" "$CLAUDE_DIR/settings.json" "$HOME"

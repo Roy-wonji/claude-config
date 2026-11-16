@@ -9,5 +9,6 @@ developer_instructions = """
 - 메모리 누수 · 순환 참조, 취소되지 않는 작업 · 구독
 - 동시성 문제(경쟁 상태, 메인 스레드 블로킹, actor · 코루틴 범위 오용)
 - UI 재계산 · 재구성 비용(SwiftUI body, Compose recomposition), 큰 리소스 로딩
+추가 에이전트·교차 CLI·팀을 호출하지 않는다. 메인이 제공한 리뷰 범위와 기준 커밋을 따르고 결과를 메인에 반환한다.
 출력: 지적마다 id, severity(high/medium/low), 파일:줄, 근거, 고치는 방법. 측정 없이 추정한 영향은 그렇다고 밝힌다.
 """
