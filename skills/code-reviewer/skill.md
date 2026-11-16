@@ -34,6 +34,7 @@ description: "코드 리뷰 자동화 풀 파이프라인. 스타일→보안→
 2. `_workspace/` 디렉토리를 프로젝트 루트에 생성한다
 3. 입력을 정리하여 `_workspace/00_input.md`에 저장한다
 4. 대상 코드를 식별하고 리뷰 범위를 결정한다
+4-1. 저장소 루트 `REVIEW.md`(있으면) · `CLAUDE.md` · `AGENTS.md`를 읽어 `_workspace/00_input.md`에 리뷰 기준(심각도 · 제외 대상 · 항상 확인)으로 옮긴다. 모든 팀원이 이 기준을 따른다
 5. 기존 파일이 있으면 `_workspace/`에 복사하고 해당 Phase를 건너뛴다
 6. 요청 범위에 따라 **실행 모드를 결정**한다
 
@@ -47,7 +48,13 @@ description: "코드 리뷰 자동화 풀 파이프라인. 스타일→보안→
 | 1d | 아키텍처 리뷰 | architecture-reviewer | 없음 | `_workspace/04_architecture_review.md` |
 | 2 | 종합 리뷰 | review-synthesizer | 작업 1a~1d | `_workspace/05_review_summary.md` |
 
-작업 1a~1d(4개 영역 리뷰)는 **모두 병렬 실행**한다.
+| 1e | 정확성 리뷰 (교차) | 내장 `/code-review` (Claude) | 없음 | `_workspace/06_code_review.md` |
+| 1f | 독립 교차 리뷰 | Codex (`codex exec -s read-only`, 전역 `security_reviewer` · `performance_reviewer` · `architecture_reviewer` 서브에이전트 병렬) | 없음 | `_workspace/07_codex_review.md` |
+
+작업 1a~1f는 **모두 병렬 실행**한다. 1e·1f는 결과를 2(종합)에 넘긴다.
+- 1e: 현재 브랜치 diff에 `/code-review`를 돌린다(버그 · 보안 · 엣지 케이스). 이 명령은 `REVIEW.md`를 읽지 않으므로 기준은 00_input.md로 보완한다.
+- 1f: Codex를 쓸 수 없으면 건너뛰고 종합 보고서에 "Codex 교차 리뷰 미실시"를 적는다. 다른 모델로 몰래 대체하지 않는다.
+- 깊은 검증이 필요하면(보안 · 결제 · 마이그레이션) 클라우드 `/ultrareview`를 사용자에게 제안한다. 비용이 들므로 자동 실행하지 않는다.
 
 **팀원 간 소통 흐름:**
 - style-inspector → security-analyst에게 주석 내 민감 정보 전달, performance-analyst에게 복잡 함수 목록 전달
@@ -59,7 +66,8 @@ description: "코드 리뷰 자동화 풀 파이프라인. 스타일→보안→
 
 종합 보고서를 기반으로 최종 산출물을 정리한다:
 
-1. `_workspace/` 내 모든 리뷰를 확인한다
+1. `_workspace/` 내 모든 리뷰를 확인한다. 같은 문제는 하나로 합치고, 여러 레인(에이전트 · `/code-review` · Codex)이 함께 지적한 항목은 신뢰도를 높게 본다
+1-1. 서로 부딪히는 의견은 "가독성 우선안"과 "성능 우선안"(또는 "보안 우선안")처럼 두 안을 나란히 적고, 이 저장소 상황에 맞는 쪽을 근거와 함께 고른다
 2. 최종 판정(Approve/Request Changes/Reject)을 결정한다
 3. 최종 요약을 사용자에게 보고한다
 

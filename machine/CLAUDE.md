@@ -99,6 +99,13 @@ Say "setup omc" or run `/oh-my-claudecode:omc-setup`.
 - 모든 응답(설명, 진행 보고, 요약, thinking 포함)은 항상 한국어로 작성할 것. 코드/식별자/명령어만 원문 유지
 - 작업은 병렬로 벌리지 말고 한 단계씩 순차적으로 진행하고, 각 단계 완료를 확인한 뒤 다음 단계로 넘어갈 것
 
+## 멀티 에이전트 코드 리뷰 (Claude + Codex)
+
+- 리뷰 · PR 검토 요청은 `code-reviewer` 스킬(roy)로 한다: 스타일 · 보안 · 성능 · 아키텍처 에이전트 + 내장 `/code-review` + Codex 서브에이전트(`security_reviewer` · `performance_reviewer` · `architecture_reviewer`)를 병렬로 돌리고 `review-synthesizer`가 종합한다. 작은 변경(파일 1~2개)은 `/code-review` 하나로 끝낸다.
+- 리뷰 기준은 저장소 루트 `REVIEW.md`(템플릿: `~/.claude/claude-config/templates/REVIEW.md`)와 `CLAUDE.md`다. 로컬 `/code-review`는 `REVIEW.md`를 읽지 않으므로 공통 규칙은 `CLAUDE.md`에 둔다.
+- 부딪히는 의견은 "가독성 우선안 · 성능 우선안"처럼 두 안을 비교해 고른다. 모든 지적에 `파일:줄` 근거를 단다.
+- 클라우드 `/ultrareview`는 보안 · 결제 · 마이그레이션처럼 깊은 검증이 필요할 때만 사용자에게 제안한다(비용).
+
 ## 핵심 코딩 원칙 (4원칙) — 최우선
 
 > 출처: https://lsjsj92.tistory.com/717 (Claude Code CLAUDE.md 가이드)

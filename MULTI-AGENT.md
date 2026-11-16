@@ -23,3 +23,16 @@
 ## 참고
 - 단순 작업(1~2단계)은 멀티에이전트 없이 직접 처리하는 게 빠름.
 - 멀티파일 변경·리서치·리뷰 등 독립 단계가 3개 이상일 때 팀/서브에이전트가 유리.
+
+## 멀티 에이전트 코드 리뷰 (Claude + Codex)
+
+| 레인 | 실행 | 보는 것 |
+|---|---|---|
+| roy 리뷰 팀 | `code-reviewer` 스킬 → style-inspector · security-analyst · performance-analyst · architecture-reviewer 병렬 → review-synthesizer | 영역별 독립 의견 + 충돌 종합 |
+| 내장 리뷰 | `/code-review` (로컬, 모든 플랜) · `/ultrareview` (클라우드, 필요할 때만) | 정확성 · 보안 · 엣지 케이스 |
+| Codex | `codex exec -s read-only` → 전역 서브에이전트 `security_reviewer` · `performance_reviewer` · `architecture_reviewer` 병렬 | 다른 모델의 독립 교차 의견 |
+| PR 자동 리뷰 | Team · Enterprise의 Code Review (GitHub App) | PR마다 인라인 코멘트 |
+
+- 공통 기준: 저장소 루트 `REVIEW.md` (템플릿 `templates/REVIEW.md`). PR 자동 리뷰 · Codex · roy 리뷰 팀이 읽는다. 로컬 `/code-review`는 `CLAUDE.md`만 읽는다.
+- Codex 파일: `codex/AGENTS.md`(전역 지침) · `codex/agents/*.toml`(서브에이전트). `machine/install.sh`가 `~/.codex/`에 링크한다.
+
