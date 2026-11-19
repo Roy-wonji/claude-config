@@ -1,0 +1,11 @@
+{
+  "embedding": {
+    "provider": "openai",
+    "model": "qwen3-embedding:0.6b",
+    "base_url": "http://localhost:11434/v1",
+    "api_key": "ollama"
+  },
+  "indexing": {
+    "exclude": ["**/node_modules/**", "**/build/**", "**/.build/**", "**/dist/**", "**/.next/**", "**/Derived/**", "**/*.xcframework/**", "**/.omc/**", "**/.claude/state/**", "**/.venv/**"]
+  }
+}
