@@ -140,6 +140,26 @@ else
   warn "pfw 번들 없음: $BUNDLE_DIR/pfw-skills.tar.gz"
 fi
 
+log "로컬 코드 의미 검색(ChunkHound) 전역 설정"
+mkdir -p "$HOME/.config/chunkhound"
+[ -e "$HOME/.config/chunkhound/chunkhound.json" ] || cp "$HERE/chunkhound.json" "$HOME/.config/chunkhound/chunkhound.json"
+GIT_IGNORE="$(git config --global --includes --get core.excludesfile || true)"
+GIT_IGNORE="${GIT_IGNORE/#\~/$HOME}"
+GIT_IGNORE="${GIT_IGNORE:-${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore}"
+if ! grep -qxF '.chunkhound/' "$GIT_IGNORE" 2>/dev/null; then
+  mkdir -p "$(dirname "$GIT_IGNORE")"
+  [ -s "$GIT_IGNORE" ] && [ -n "$(tail -c1 "$GIT_IGNORE")" ] && echo >> "$GIT_IGNORE"
+  echo '.chunkhound/' >> "$GIT_IGNORE" || FAILED+=("gitignore:chunkhound")
+fi
+# chunkhound mcp 는 git 밖에서도 현재 폴더 전체를 인덱싱하므로 git 저장소 루트(홈 제외)에서만 띄운다.
+# 저장소의 .chunkhound.json 이 임베딩 주소를 외부로 바꾸지 못하게 로컬 Ollama 를 CLI 인자로 고정한다(CLI > 로컬 설정).
+CH_MCP='r=$(git rev-parse --show-toplevel 2>/dev/null) && [ "$r" != "$(cd "$HOME" && pwd -P)" ] && cd "$r" && exec chunkhound mcp --provider openai --base-url http://localhost:11434/v1 --model qwen3-embedding:0.6b; echo "chunkhound: git 저장소 밖이라 시작하지 않습니다" >&2; exit 1'
+if command -v claude >/dev/null && ! (cd "$HOME" && claude mcp get chunkhound 2>/dev/null | grep -q 'Scope: User'); then
+  claude mcp add -s user chunkhound -- sh -c "$CH_MCP" >/dev/null || FAILED+=("mcp:chunkhound")
+fi
+command -v chunkhound >/dev/null || warn "chunkhound 없음: uv tool install --python 3.12 'chunkhound==6.1.0'"
+command -v ollama >/dev/null || warn "ollama 없음: brew install ollama && brew services start ollama && ollama pull qwen3-embedding:0.6b"
+
 log "완료. 백업: $BACKUP"
 if [ ${#FAILED[@]} -gt 0 ]; then
   printf '  실패/건너뜀: %s\n' "${FAILED[@]}"
