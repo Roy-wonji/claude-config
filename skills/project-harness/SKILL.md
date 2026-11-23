@@ -1,6 +1,6 @@
 ---
 name: project-harness
-description: 프로젝트에 에이전트 하네스(Context·Control·Observability)를 설치한다 — git 규칙 훅(보호 브랜치·브랜치 이름·한국어 커밋 제목), 검증 게이트(verify 통과 전 커밋·종료 차단), 하네스 문서·스킬 사용 기록과 리포트. CIRQLE-Native-Mobile 하네스를 범용화한 것. "하네스 설치", "하네스 적용", "harness 깔아", "verify 게이트", "커밋 규칙 훅" 요청이나 새 프로젝트에 규칙·검증 체계를 잡을 때 사용.
+description: 프로젝트에 에이전트 하네스(Context·Control·Observability)를 설치한다 — git 규칙 훅(보호 브랜치·브랜치 이름·한국어 커밋 제목, 커밋·push 순간 git 훅), 검증 게이트(verify 통과 전 커밋·종료 차단, 테스트 끄기 차단), 하네스 문서·스킬 사용과 검증 실패 기록·리포트(자기개선 루프). CIRQLE-Native-Mobile 하네스를 범용화한 것. "하네스 설치", "하네스 적용", "harness 깔아", "verify 게이트", "커밋 규칙 훅" 요청이나 새 프로젝트에 규칙·검증 체계를 잡을 때 사용.
 ---
 
 # project-harness
@@ -32,6 +32,7 @@ CIRQLE-Native-Mobile 의 `.claude/` 하네스를 어느 프로젝트에나 깔 �
 ## 원칙
 
 - 프롬프트 지시는 확률, 실행되는 검사는 보장이다. 같은 실수가 세 번째면 훅으로 만든다.
+- 평가 장치(verify · 검사 · 훅 · CI)는 고쳐지는 대상 밖에 둔다. 실패는 `verify-history.jsonl`로 남기고 `harness-report`로 반복 실패를 찾아 겪은 문제 → 훅 · 검사로 올린다(템플릿 harness.md 자기개선 루프).
 - 규칙 파일은 200줄 미만, 경로별 규칙은 `.claude/rules/*.md` 의 frontmatter `paths` 로 나눈다.
 - 원본 하네스(KMP·Tuist·Gradle 단계, 모듈 경계 검사)는 CIRQLE-Native-Mobile `.claude/` 에 그대로 있다. 비슷한 스택이면 그 `verify` 단계를 참고해 `verify.steps` 로 옮긴다.
 - 상세: `templates/docs/harness.md` (설치 후 `.claude/docs/harness.md`).

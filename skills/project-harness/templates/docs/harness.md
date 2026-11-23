@@ -7,6 +7,7 @@
 - 세 축으로 관리한다. **Context**(무엇을 읽게 할지) · **Control**(무엇을 막고 확인할지) · **Observability**(무엇이 쓰이는지 보고 정리).
 - 규칙 파일은 짧게(200줄 미만), 경로별로 나눈다. 코드만 봐서는 알 수 없는 팀 규칙만 적는다.
 - 규칙은 Hard(반드시)와 Soft(권장)로 나눈다. Soft는 기존 코드가 다르면 기존 코드를 따른다.
+- 평가 장치(verify · 검사 · 훅 · CI)는 고쳐지는 대상 밖에 둔다. 실패 기록으로 하네스를 고치되, 평가를 약하게 해서 통과하지 않는다(아래 자기개선 루프).
 
 ## 구성
 
@@ -17,8 +18,9 @@
 | 상세 문서 | `.claude/docs/*.md` | 영역별 규칙 |
 | 경로별 규칙 | `.claude/rules/*.md` | frontmatter `paths`에 맞는 파일을 다룰 때만 |
 | 훅 | `.claude/hooks/*` + `.claude/settings.json` | 규칙 강제 · 사용 기록 |
-| 스크립트 | `.claude/scripts/verify` · `harness-report` | 검증 · 사용 리포트 |
-| 로컬 상태 | `.claude/state/` (git 제외) | 검증 기록 · 사용 기록 · 로그 |
+| git 훅 | `.githooks/` (`core.hooksPath`) | 커밋 · 병합 · push 순간 보호 브랜치 차단 |
+| 스크립트 | `.claude/scripts/verify` · `harness-report` · `check-test-integrity` | 검증 · 사용 · 실패 리포트 · 테스트 끄기 검사 |
+| 로컬 상태 | `.claude/state/` (git 제외) | 검증 기록 · 사용 기록 · 로그 · 검증 실행 기록(`verify-history.jsonl`) |
 
 ## 훅
 
@@ -27,6 +29,9 @@
 | `PreToolUse` (Bash) | `check-git-rules.sh` → `check_git_rules.py` | 보호 브랜치 커밋 · 푸시 금지, 브랜치 이름, 커밋 제목, `.DS_Store`, 검증 안 된 코드 커밋 금지 |
 | `PostToolUse` (Read · Skill) | `usage_log.py` | 하네스 문서 · 스킬 사용 기록 |
 | `Stop` | `stop_guard.py` | 검증 안 된 코드 변경이 있으면 종료를 한 번 막고 verify 안내 |
+| git `pre-commit` · `pre-merge-commit` · `pre-push` | `.githooks/protected_branch.py` | 커밋 · 병합 · push 순간 브랜치가 `git.protected`면 금지 |
+
+- PreToolUse 훅은 명령 시작 때 브랜치를 본다. 그 사이 다른 세션이 같은 작업 트리의 브랜치를 바꾸면 놓치므로 git 훅이 커밋 · push 순간에 다시 막는다.
 
 - git commit · push가 아니면 bash 문자열 비교만 하고 끝낸다. 해당할 때만 python을 한 번(`-I -S`) 실행한다.
 - `$( … )` 안에 heredoc으로 스크립트를 넘기지 않는다(macOS에서 멈춘 적 있음). 스크립트는 파일로 둔다.
@@ -50,6 +55,8 @@ bash .claude/hooks/check-git-rules.sh --check-branch "feature/new-thing"
 - 통과하면 코드 내용 지문을 `.claude/state/verify.json`에 남긴다. 통과 후 코드를 고치면 커밋이 막힌다.
 - 각 단계 출력은 `.claude/state/verify/{단계}.log`. 종료 코드를 파이프(`| tail`)로 가리지 않는다.
 - 같은 단계가 `max_failures`번 연속 실패하면 세 번째 시도 전에 사용자에게 보고하고 승인을 받는다.
+- 실행마다 단계 결과(실패는 이유와 로그 마지막 10줄)를 `.claude/state/verify-history.jsonl`에 더한다. 단계 로그는 덮어쓰지만 이 기록은 지우지 않는다.
+- 기본 단계 `test-integrity`(`check-test-integrity`)는 이슈 참조 없이 테스트를 끈 곳(`XCTSkip(` · `@Test(.disabled` · `@Ignore` · `@Disabled` · `it.skip` · `.only` · `@pytest.mark.skip`)을 막는다. 꺼야 하면 사용자 승인 후 같은 줄 · 바로 윗줄에 `#이슈번호`. CI가 있으면 같은 스크립트를 PR CI에도 넣는다.
 
 ## 관측과 정리
 
@@ -57,10 +64,28 @@ bash .claude/hooks/check-git-rules.sh --check-branch "feature/new-thing"
 .claude/scripts/harness-report --days 30
 ```
 
-- 한 달에 한 번 보고, 오래 안 읽힌 문서는 합치거나 지운다.
+- 한 달에 한 번 보고, 오래 안 읽힌 문서는 합치거나 지운다. verify 단계별 실패 / 실행도 함께 본다.
 - 에이전트가 같은 실수를 두 번 하면 문서에 적고, 세 번째부터는 훅으로 만든다.
+
+## 자기개선 루프
+
+모델은 그대로 두고 하네스를 실패 기록으로 고친다. 참고: Lilian Weng "Harness Engineering for Self-Improvement"(Lil'Log, 2026-07-04)와 거기 인용된 ACE · AHE · Self-Harness.
+
+| 단계 | 하는 일 | 도구 |
+|------|---------|------|
+| 관찰 | 무엇을 읽었고 어디서 실패했는지 남긴다. 실패한 시도도 지우지 않는다 | `usage.jsonl` · `verify-history.jsonl` · `harness-report` |
+| 회고 | 실패를 검증기가 본 증상, 에이전트가 한 행동, 원인으로 나눠 적는다 | 겪은 문제 항목 |
+| 큐레이션 | 겪은 문제를 항목 단위로 더하고 합치고 지운다 | 아래 규칙 |
+| 강제 | 두 번째 같은 실수는 문서, 세 번째부터 훅 · 검사 | `.claude/hooks` · `.claude/scripts` |
+| 평가 | 하네스를 고친 변경이 의도한 실패를 막고 정상 작업을 깨지 않는지 확인 | PR 본문 예측 |
+
+- 겪은 문제 항목은 bullet 하나에 증상 → 원인 → 대처, 끝에 강제 수단과 이슈 번호. 항목 단위로만 고치고 절 전체를 요약해 다시 쓰지 않는다(구체 사실이 사라진다).
+- 더하기는 같은 원인의 두 번째 실수나 비용이 큰 문제, 합치기는 원인이 같은 항목, 지우기는 원인이 사라졌을 때(PR 본문에 이유).
+- 평가 장치(`verify` · 검사 스크립트 · 훅 · `.githooks` · CI)를 약하게 하는 변경(단계 삭제 · 조건 완화)은 기능 PR에 섞지 않고 별도 PR로 사람의 승인을 받는다.
+- 하네스를 고치는 PR 본문에는 막으려는 실패 · 예상 회귀(오탐) · 확인 방법을 적고, 다음 리포트에서 맞았는지 본다.
 
 ## 겪은 문제
 
+- 같은 작업 트리를 쓰던 다른 세션이 `checkout develop`을 한 직후 feature용 커밋 · push가 develop에서 실행됐다 → 여러 세션이 동시에 일하면 세션마다 git worktree를 쓴다. 강제: `.githooks` 보호 브랜치 검사
 - `git stash`는 같은 작업 트리를 쓰는 다른 세션의 변경을 날릴 수 있다. 쓰지 않는다. 지문 계산은 임시 index로 한다.
 - `codex exec`는 stdin을 닫지 않으면 입력을 기다리며 멈춘다. `< /dev/null`을 붙인다.

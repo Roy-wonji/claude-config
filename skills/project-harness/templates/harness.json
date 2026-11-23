@@ -1,13 +1,38 @@
 {
-  "code_dirs": ["src"],
-  "code_files": ["package.json"],
-  "base_refs": ["origin/develop", "develop", "origin/main", "main"],
+  "code_dirs": [
+    "src"
+  ],
+  "code_files": [
+    "package.json"
+  ],
+  "base_refs": [
+    "origin/develop",
+    "develop",
+    "origin/main",
+    "main"
+  ],
   "max_failures": 2,
   "git": {
-    "protected": ["main", "develop", "release"],
-    "no_delete": ["main", "develop"],
+    "protected": [
+      "main",
+      "develop",
+      "release"
+    ],
+    "no_delete": [
+      "main",
+      "develop"
+    ],
     "branch_pattern": "^feature/[a-z0-9]+(-[a-z0-9]+)*$",
-    "commit_types": ["feat", "fix", "refactor", "test", "docs", "chore", "build", "release"],
+    "commit_types": [
+      "feat",
+      "fix",
+      "refactor",
+      "test",
+      "docs",
+      "chore",
+      "build",
+      "release"
+    ],
     "require_issue": true,
     "require_korean": true,
     "max_subject": 50,
@@ -16,8 +41,22 @@
   "verify": {
     "steps": [
       {
+        "name": "test-integrity",
+        "cmd": [
+          "python3",
+          ".claude/scripts/check-test-integrity"
+        ],
+        "cwd": ".",
+        "paths": [],
+        "env": {},
+        "fail_if_log_matches": ""
+      },
+      {
         "name": "test",
-        "cmd": ["npm", "test"],
+        "cmd": [
+          "npm",
+          "test"
+        ],
         "cwd": ".",
         "paths": [],
         "env": {},
