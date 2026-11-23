@@ -1,0 +1,2 @@
+#!/bin/sh
+exec python3 -I -S "$(git rev-parse --show-toplevel)/.githooks/protected_branch.py" push

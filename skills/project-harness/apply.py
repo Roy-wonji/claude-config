@@ -6,11 +6,13 @@
 - .claude/harness.json 은 없을 때만 예시를 복사한다(프로젝트 값으로 직접 고친다).
 - .claude/settings.json 에 하네스 훅 3개를 병합한다(같은 command 가 있으면 추가하지 않음).
 - .gitignore 에 .claude/state/ 를 추가한다.
+- .githooks/ 에 보호 브랜치 git 훅(pre-commit · pre-merge-commit · pre-push)을 복사하고, core.hooksPath 가 비어 있으면 .githooks 로 켠다.
 """
 import json
 import os
 import shutil
 import stat
+import subprocess
 import sys
 
 TEMPLATES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
@@ -47,6 +49,22 @@ def merge_hooks(settings_path, report):
     report.append(f"settings.json 훅 {added}개 추가")
 
 
+def install_git_hooks(root, force, report):
+    """명령 시작 뒤 다른 세션이 브랜치를 바꿔도 커밋 · push 순간에 막도록 git 훅을 둔다."""
+    src = os.path.join(TEMPLATES, "githooks")
+    for name in sorted(os.listdir(src)):
+        dst = os.path.join(root, ".githooks", name)
+        copy(os.path.join(src, name), dst, force, report)
+        os.chmod(dst, os.stat(dst).st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+    current = subprocess.run(["git", "-C", root, "config", "--get", "core.hooksPath"],
+                             capture_output=True, text=True).stdout.strip()
+    if not current:
+        subprocess.run(["git", "-C", root, "config", "core.hooksPath", ".githooks"], check=False)
+        report.append("core.hooksPath = .githooks")
+    elif current != ".githooks":
+        report.append(f"core.hooksPath 가 이미 {current} 입니다. .githooks 훅을 그쪽에 직접 연결하세요")
+
+
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     force = "--force" in sys.argv[1:]
@@ -68,6 +86,7 @@ def main():
     copy(os.path.join(TEMPLATES, "docs", "harness.md"), os.path.join(claude, "docs", "harness.md"), force, report)
     copy(os.path.join(TEMPLATES, "harness.json"), os.path.join(claude, "harness.json"), False, report)
     merge_hooks(os.path.join(claude, "settings.json"), report)
+    install_git_hooks(root, force, report)
 
     gitignore = os.path.join(root, ".gitignore")
     lines = open(gitignore, encoding="utf-8").read().splitlines() if os.path.exists(gitignore) else []
