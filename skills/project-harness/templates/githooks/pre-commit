@@ -1,2 +1,3 @@
 #!/bin/sh
-exec python3 -I -S "$(git rev-parse --show-toplevel)/.githooks/protected_branch.py" commit
+# 하위 폴더에 설치해도 동작하도록 훅 파일 위치로 찾는다
+exec python3 -I -S "$(dirname "$0")/protected_branch.py" commit

@@ -16,7 +16,7 @@ CIRQLE-Native-Mobile 의 `.claude/` 하네스를 어느 프로젝트에나 깔 �
    python3 <이 스킬 폴더>/apply.py <프로젝트 루트>
    ```
 3. `.claude/harness.json` 을 프로젝트에 맞게 고친다. 값이 애매하면 사용자에게 묻는다.
-   - `code_dirs` · `code_files`: 검증이 필요한 코드 경로. `["*"]` 면 문서·`.claude/` 밖 전부.
+   - `code_dirs` · `code_files`: 검증이 필요한 코드 경로. `["*"]` 면 문서·`.claude/` 밖 전부. 테스트 폴더(`tests/` 등)도 넣는다. 빠지면 테스트만 바꾼 변경에 verify · `test-integrity`가 돌지 않는다.
    - `base_refs`: 변경 비교 기준 브랜치(처음 존재하는 것을 쓴다).
    - `git`: `protected`, `no_delete`, `branch_pattern`, `commit_types`, `require_issue`, `require_korean`, `max_subject`, `verify_gate`.
    - `verify.steps`: `{name, cmd[], cwd, paths[], env{}, fail_if_log_matches}`. `paths` 접두 경로가 바뀔 때만 돈다(비면 항상).

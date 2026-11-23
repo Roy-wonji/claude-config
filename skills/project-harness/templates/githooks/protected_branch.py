@@ -9,17 +9,19 @@ import subprocess
 import sys
 
 
+DEFAULT = ["main", "develop", "release"]  # check_git_rules.py 기본값과 같게 둔다
+
+
 def protected(root):
     try:
         with open(os.path.join(root, ".claude", "harness.json"), encoding="utf-8") as f:
-            return set(json.load(f).get("git", {}).get("protected", []))
+            return set(json.load(f).get("git", {}).get("protected", DEFAULT))
     except (OSError, ValueError):
-        return {"main", "develop", "release"}
+        return set(DEFAULT)
 
 
 def main():
-    root = subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True).stdout.strip()
-    names = protected(root)
+    names = protected(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # .githooks의 부모 = 하네스 설치 위치
     if sys.argv[1:] == ["push"]:
         targets = [line.split()[2] for line in sys.stdin if len(line.split()) == 4]
     else:

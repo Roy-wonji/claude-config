@@ -25,8 +25,8 @@ MARKERS = [
     ("@Ignore", re.compile(r"@((kotlin\.test|org\.junit)\.)?Ignore\b")),
     ("@Disabled", re.compile(r"@(org\.junit\.jupiter\.api\.)?Disabled\b")),
     # xit · fit은 줄 맨 앞만 본다(model.fit( 같은 호출 제외)
-    ("JS skip", re.compile(r"\b(it|test|describe)\.skip\(|^\s*x(it|describe|test)\(")),
-    ("JS only", re.compile(r"\b(it|test|describe)\.only\(|^\s*f(it|describe)\(")),  # 나머지 테스트를 모두 건너뛴다
+    ("JS skip", re.compile(r"\b(it|test|describe)\.skip\b|^\s*x(it|describe|test)\(")),  # test.skip.each 포함
+    ("JS only", re.compile(r"\b(it|test|describe)\.only\b|^\s*f(it|describe)\(")),  # 나머지 테스트를 모두 건너뛴다
     ("pytest skip", re.compile(r"@pytest\.mark\.skip\b|\bpytest\.skip\(|@unittest\.skip\(")),
 ]
 # SwiftUI `.disabled(false)`와 구분하려고 @Test · @Suite 괄호 안의 .disabled(만 본다
@@ -77,6 +77,8 @@ def main():
         for i, line in enumerate(lines):
             # 문자열(테스트 이름 · URL)과 주석 속 글자는 보지 않는다. 이슈 참조는 주석까지 본다
             code = BLOCK_COMMENT.sub("", STRING.sub('""', line)).split("//", 1)[0]
+            if path.endswith(".py"):
+                code = code.split("#", 1)[0]
             found = [name for name, pattern in MARKERS if pattern.search(code)]
             trait, depth = trait_text(code, depth)
             if DISABLED_TRAIT.search(trait):
