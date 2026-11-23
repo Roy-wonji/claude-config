@@ -53,16 +53,31 @@ def install_git_hooks(root, force, report):
     """명령 시작 뒤 다른 세션이 브랜치를 바꿔도 커밋 · push 순간에 막도록 git 훅을 둔다."""
     src = os.path.join(TEMPLATES, "githooks")
     for name in sorted(os.listdir(src)):
+        if not os.path.isfile(os.path.join(src, name)) or name.startswith("."):
+            continue
         dst = os.path.join(root, ".githooks", name)
         copy(os.path.join(src, name), dst, force, report)
         os.chmod(dst, os.stat(dst).st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-    current = subprocess.run(["git", "-C", root, "config", "--get", "core.hooksPath"],
-                             capture_output=True, text=True).stdout.strip()
-    if not current:
-        subprocess.run(["git", "-C", root, "config", "core.hooksPath", ".githooks"], check=False)
-        report.append("core.hooksPath = .githooks")
-    elif current != ".githooks":
-        report.append(f"core.hooksPath 가 이미 {current} 입니다. .githooks 훅을 그쪽에 직접 연결하세요")
+    def git(*args):
+        return subprocess.run(["git", "-C", root, *args], capture_output=True, text=True).stdout.strip()
+    top = git("rev-parse", "--show-toplevel")
+    if not top:
+        report.append("git 저장소가 아니라 .githooks 를 연결하지 않았습니다")
+        return
+    # 하위 폴더에 설치해도 저장소 루트 기준 경로로 연결한다
+    wanted = os.path.relpath(os.path.join(root, ".githooks"), top)
+    current = git("config", "--get", "core.hooksPath")
+    hooks_dir = os.path.join(root, git("rev-parse", "--git-path", "hooks"))
+    existing = [n for n in (os.listdir(hooks_dir) if os.path.isdir(hooks_dir) else []) if not n.endswith(".sample")]
+    if current == wanted:
+        return
+    if current or existing:
+        # 이미 쓰는 훅(commit-msg · Git LFS pre-push 등)을 끄지 않도록 바꾸지 않는다
+        report.append(f"기존 git 훅({current or ', '.join(existing)})이 있어 core.hooksPath 를 바꾸지 않았습니다. "
+                      f"{wanted} 의 훅을 기존 훅에서 부르도록 직접 연결하세요")
+        return
+    git("config", "core.hooksPath", wanted)
+    report.append(f"core.hooksPath = {wanted}")
 
 
 def main():

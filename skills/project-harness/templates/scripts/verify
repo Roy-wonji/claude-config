@@ -103,8 +103,12 @@ def main():
         print(f"▶ {name}: {' '.join(cmd)} (로그: {log_path})", flush=True)
         started = time.monotonic()
         with open(log_path, "w", encoding="utf-8") as log_file:
-            code = subprocess.run(cmd, cwd=cwd, stdout=log_file, stderr=subprocess.STDOUT,
-                                  env=dict(os.environ, **extra_env)).returncode
+            try:
+                code = subprocess.run(cmd, cwd=cwd, stdout=log_file, stderr=subprocess.STDOUT,
+                                      env=dict(os.environ, **extra_env)).returncode
+            except OSError as error:  # 명령 · 폴더가 없어도 실패로 기록한다
+                log_file.write(f"실행할 수 없습니다: {error}\n")
+                code = 127
         seconds = round(time.monotonic() - started)
         with open(log_path, encoding="utf-8", errors="replace") as log_file:
             log = log_file.read()
