@@ -137,6 +137,11 @@ Swift Testing 기반 **도메인별 완전 자동 테스트 생성 + PR 자동 �
 - TCA TestStore / WeaveDI Mock 자동 설정
 - 성공 시 PR 자동 생성
 
+### 🧭 `@lead-helper`
+`/leadrun` 리드가 맡긴 할 일 하나를 **임시 git 워크트리**(`isolation: worktree`)에서 끝내는 도우미.
+- 맡은 파일만 고치고 저장소 검증을 통과하면 커밋까지만 한다(푸시·PR·머지는 리드가 허락받고 처리)
+- `TASKS.md`는 고치지 않는다. 보고 형식: 할 일·상태(끝남/막힘)·브랜치·바꾼 파일·검증
+
 ## 📚 docs/agent — iOS 프로젝트용 가이드 템플릿
 
 신규 iOS 프로젝트(TCA + Clean Architecture + Tuist)에 그대로 떠다 쓰거나 일부만 발췌해 사용한다.
@@ -188,6 +193,12 @@ iOS 시뮬레이터 자동화 스크립트 모음(빌드/UI 네비게이션/접�
 
 ### 🏛️ `fable-grade`
 현재 모델(Haiku/Sonnet/Opus) 산출물을 **Fable-5급 시니어 결과에 가깝게** 끌어올리는 작업 프로토콜. **모델을 Fable 5로 바꾸는 게 아니라**(불가능) 작업 규율을 강제해 지금 모델의 최대치를 뽑는다. 아키텍처 설계·멀티파일 리팩터·마이그레이션·근인 디버깅에 발동. 8기둥(근거 우선 `파일:라인`·규약 추출·근인 1문장·현실 규모 단순화·트레이드오프 표면화·검증 가능한 마이그레이션·하드 제약 존중)을 체크리스트로 밟는다. iOS/Tuist 워크드 레퍼런스(xcconfig base+#include 상속, 단일 타깃+다중 config, 워크스페이스 config 일관성, 중나식 레이어드 모듈) 포함.
+
+### 🧭 `leadrun`
+리드 1 + 도우미 여럿 구조(REBORN LABS leadagent 방식). 겹치지 않는 할 일 3~5개로 나눠 `.omc/leadrun/TASKS.md`(리드만 수정, 상태 `대기·하는 중·끝남·막힘`)에 적고 `lead-helper`를 **한 번에 하나씩** 워크트리에서 돌린다. 나누기 전·합치기 전 사용자 확인. 서브에이전트가 필요하면 자동으로 쓴다.
+
+### ⚡ `code-mode`
+MCP 도구 설명서·중간 결과를 컨텍스트에 싣지 않고 스크립트로 불러 **필요한 결과만** 받는다(Cloudflare Code Mode · Anthropic "Code execution with MCP" 방식). 실행기 `scripts/mcp-codemode/mcp.mjs`(`servers`·`tools`·`schema`·`call --max`, 스크립트용 `withServer`). 코드로만 쓰는 서버는 `~/.claude/mcp-codemode.json`으로 옮겨 대화 도구 목록에서 뺀다.
 
 ### 📦 전체 스킬 인벤토리 (36개)
 agent-council,app-store-changelog apple-design-system,apple-skills clean-architecture,commit fable-grade,figma-pencil-ui-fallback,ios-accessibility ios-debugger-agent,ios-performance ios-performance-optimizer,ios-performance-pfw ios-performance-uikit-guide,ios-simulator ios-simulator-skill,ios-uikit-expert reactorkit-expert,rxswift-expert skill-creator,swift-api-design-guidelines swift-concurrency,swift-concurrency-pro swift-ios-skills,swift-security-expert swift-testing-pro,swiftdata-pro swiftui-auditor,swiftui-liquid-glass swiftui-pro,swiftui-ui-patterns swiftui-uikit-interop,swiftui-view-refactor tca-optimizer,tdd thought-based-reasoning

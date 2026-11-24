@@ -1,0 +1,9 @@
+{
+  "name": "mcp-codemode",
+  "private": true,
+  "type": "module",
+  "description": "MCP 서버를 코드로 호출해 결과만 돌려주는 코드 모드 실행기",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2"
+  }
+}
